@@ -8,12 +8,20 @@
   }
   
   body {
-    @apply bg-black text-white;
+    @apply bg-gray-900 text-gray-100 antialiased;
   }
 }
 
-@layer utilities {
-  .text-shadow {
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+@layer components {
+  .section-title {
+    @apply text-3xl font-light mb-8 text-center text-gray-100;
+  }
+  
+  .card {
+    @apply bg-gray-800 border border-gray-700 rounded-lg transition-all duration-300;
+  }
+  
+  .card:hover {
+    @apply border-gray-600 shadow-lg shadow-gray-900/50;
   }
 }
