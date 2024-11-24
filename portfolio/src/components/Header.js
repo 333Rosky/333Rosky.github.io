@@ -22,7 +22,7 @@ export default function Header() {
           <a href="#publications" className="text-gray-400 hover:text-gray-100 transition-colors">Publications</a>
           <div className="flex items-center gap-4 ml-6">
             <motion.a
-              href="https://github.com/hlemonnier/Projet-Quant"
+              href="https://github.com/333Rosky"
               target="_blank"
               rel="noopener noreferrer"
               whileHover={{ scale: 1.1 }}
@@ -31,7 +31,7 @@ export default function Header() {
               <GithubIcon size={20} />
             </motion.a>
             <motion.a
-              href="https://linkedin.com/in/yourusername"
+              href="https://linkedin.com/in/romain-bastiani-118072173"
               target="_blank"
               rel="noopener noreferrer"
               whileHover={{ scale: 1.1 }}
