@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
+import RotatingCube from './RotatingCube';
 
 export default function Hero() {
   return (
@@ -11,6 +12,9 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
+          <div className="mb-12">
+            <RotatingCube />
+          </div>
           <h1 className="text-5xl font-light mb-6 tracking-tight text-gray-100">
             Quantitative Research & Financial Analysis
           </h1>
@@ -19,20 +23,22 @@ export default function Hero() {
             through rigorous quantitative analysis and innovative research methodologies.
           </p>
           <div className="flex justify-center gap-4">
-            <motion.button
+            <motion.a
+              href="#research"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
             >
               View Research
-            </motion.button>
-            <motion.button
+            </motion.a>
+            <motion.a
+              href="#contact"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               className="px-6 py-3 border border-gray-600 rounded-lg hover:border-gray-500 hover:bg-gray-800 transition-colors"
             >
               Contact Me
-            </motion.button>
+            </motion.a>
           </div>
         </motion.div>
         <motion.div

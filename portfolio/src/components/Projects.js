@@ -1,7 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-// eslint-disable-next-line 
-import { ExternalLink, Github } from 'lucide-react';
+import { Github } from 'lucide-react';
 
 const projects = [
   {
@@ -40,7 +39,7 @@ export default function Projects() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
-              className="card p-6"
+              className="bg-gray-800 p-6 rounded-lg border border-gray-700"
             >
               <h3 className="text-xl font-medium mb-3 text-gray-100">{project.title}</h3>
               <p className="text-gray-400 mb-4">{project.description}</p>
