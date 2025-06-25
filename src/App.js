@@ -1,28 +1,16 @@
 import React from 'react';
-import { AnimatePresence } from 'framer-motion';
+
 import Header from './components/Header';
 import Hero from './components/Hero';
 import About from './components/About';
 import Projects from './components/Projects';
-import LoadingScreen from './components/LoadingScreen';
+
 
 import Contact from './components/Contact';
 
 function App() {
-  const [loading, setLoading] = React.useState(true);
-
-  React.useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 3000);
-    return () => clearTimeout(timer);
-  }, []);
-
   return (
     <>
-      <AnimatePresence>
-        {loading && <LoadingScreen />}
-      </AnimatePresence>
 
       <div className="min-h-screen bg-black">
         <Header />
