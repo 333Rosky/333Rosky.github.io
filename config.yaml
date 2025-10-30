@@ -6,7 +6,8 @@ theme: "PaperMod"
 # Génération dans docs/ pour GitHub Pages (paramétrable côté Pages)
 publishDir: "docs"
 
-paginate: 10
+pagination:
+  pagerSize: 10
 enableRobotsTXT: true
 canonifyURLs: true
 
@@ -73,6 +74,6 @@ markup:
 privacy:
   youtube:
     privacyEnhanced: true
-  twitter:
+  x:
     enableDNT: true
 
