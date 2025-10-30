@@ -1,1 +1,16 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml"><url><loc>https://333rosky.github.io/posts/bienvenue-sur-mon-portfolio/</loc><lastmod>2025-10-30T00:00:00+00:00</lastmod></url><url><loc>https://333rosky.github.io/tags/hugo/</loc><lastmod>2025-10-30T00:00:00+00:00</lastmod></url><url><loc>https://333rosky.github.io/tags/papermod/</loc><lastmod>2025-10-30T00:00:00+00:00</lastmod></url><url><loc>https://333rosky.github.io/tags/portfolio/</loc><lastmod>2025-10-30T00:00:00+00:00</lastmod></url><url><loc>https://333rosky.github.io/posts/</loc><lastmod>2025-10-30T00:00:00+00:00</lastmod></url><url><loc>https://333rosky.github.io/</loc><lastmod>2025-10-30T00:00:00+00:00</lastmod></url><url><loc>https://333rosky.github.io/tags/</loc><lastmod>2025-10-30T00:00:00+00:00</lastmod></url><url><loc>https://333rosky.github.io/categories/</loc></url><url><loc>https://333rosky.github.io/projects/</loc></url></urlset>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  
+  <sitemap>
+    <loc>http://localhost:1313/fr/sitemap.xml</loc>
+    
+      <lastmod>2025-10-30T00:00:00+00:00</lastmod>
+    
+  </sitemap>
+  
+  <sitemap>
+    <loc>http://localhost:1313/en/sitemap.xml</loc>
+    
+  </sitemap>
+  
+</sitemapindex>
