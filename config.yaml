@@ -86,17 +86,21 @@ languages:
             url: "/cv.pdf"
     menu:
       main:
-        - name: "Accueil"
-          url: "/fr/"
+        - identifier: fr-accueil
+          name: "Accueil"
+          pageRef: "/fr/"
           weight: 1
-        - name: "Expériences"
-          url: "/fr/experience/"
+        - identifier: fr-experiences
+          name: "Expériences"
+          pageRef: "/fr/experience/"
           weight: 2
-        - name: "Éducation"
-          url: "/fr/education/"
+        - identifier: fr-education
+          name: "Éducation"
+          pageRef: "/fr/education/"
           weight: 3
-        - name: "Projets"
-          url: "/fr/projects/"
+        - identifier: fr-projets
+          name: "Projets"
+          pageRef: "/fr/projects/"
           weight: 4
   en:
     languageName: "English"
@@ -113,16 +117,20 @@ languages:
             url: "/cv.pdf"
     menu:
       main:
-        - name: "Home"
-          url: "/en/"
+        - identifier: en-home
+          name: "Home"
+          pageRef: "/en/"
           weight: 1
-        - name: "Experience"
-          url: "/en/experience/"
+        - identifier: en-experience
+          name: "Experience"
+          pageRef: "/en/experience/"
           weight: 2
-        - name: "Education"
-          url: "/en/education/"
+        - identifier: en-education
+          name: "Education"
+          pageRef: "/en/education/"
           weight: 3
-        - name: "Projects"
-          url: "/en/projects/"
+        - identifier: en-projects
+          name: "Projects"
+          pageRef: "/en/projects/"
           weight: 4
 
