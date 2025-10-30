@@ -3,20 +3,20 @@ title: "Éducation"
 layout: "list"
 ---
 
-## NEOMA Business School — Grande École, Corporate Finance & Investment Banking
+## NEOMA Business School — Grande École, Finance d'Entreprise & Banque d'Investissement
 Rouen, France · 2023 — 2025
 
-Ranked #24 best Master in Finance pre-experience 2024 (Financial Times).
+Classé #24 meilleur Master en Finance pré-expérience 2024 (Financial Times).
 
-- Financial Engineering & Derivatives I, II
-- Advanced Corporate Finance
-- Financial Data Analytics & Programming
-- Private Equity & Early Stage Capital
-- Financial Modeling & Valuation
+- Ingénierie Financière & Produits Dérivés I, II
+- Finance d'Entreprise Avancée
+- Analyse de Données Financières & Programmation
+- Private Equity & Capital d'Amorçage
+- Modélisation & Évaluation Financière
 
 ---
 
-## ESIGELEC — Master of Engineering, Finance
+## ESIGELEC — Master d'Ingénieur, Finance
 Rouen, France · 2021 — 2024
 
 - Mathématiques (analyse, algèbre, statistiques)
