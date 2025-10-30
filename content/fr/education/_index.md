@@ -1,6 +1,5 @@
 ---
 title: "Éducation"
-layout: "list"
 ---
 
 ## NEOMA Business School — Grande École, Finance d'Entreprise & Banque d'Investissement

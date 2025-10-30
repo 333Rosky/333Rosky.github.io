@@ -6,7 +6,7 @@ theme: "PaperMod"
 # Génération dans docs/ pour GitHub Pages (paramétrable côté Pages)
 publishDir: "docs"
 defaultContentLanguage: "en"
-defaultContentLanguageInSubdir: true
+defaultContentLanguageInSubdir: false
 
 pagination:
   pagerSize: 10
@@ -41,11 +41,6 @@ params:
     subtitle: "Quantitative Researcher @Inception Technology"
     imageUrl: "/Linkedin PP.jpg"
     imageTitle: "Photo de profil"
-    buttons:
-      - name: "Projects"
-        url: "/en/projects/"
-      - name: "CV"
-        url: "/cv.pdf"
 
   socialIcons:
     - name: github
@@ -71,66 +66,56 @@ privacy:
     enableDNT: true
 
 languages:
-  fr:
-    languageName: "Français"
-    weight: 2
-    params:
-      profileMode:
-        enabled: true
-        title: "Romain Bastiani"
-        subtitle: "Quantitative Researcher @Inception Technology"
-        buttons:
-          - name: "Projets"
-            url: "/fr/projects/"
-          - name: "CV"
-            url: "/cv.pdf"
+  en:
     menu:
       main:
-        - identifier: fr-accueil
-          name: "Accueil"
-          pageRef: "/fr/"
+        - identifier: en-home
+          name: "Home"
+          url: "/en/"
           weight: 1
-        - identifier: fr-experiences
-          name: "Expériences"
-          pageRef: "/fr/experience/"
+        - identifier: en-experience
+          name: "Experience"
+          url: "/en/experience/"
           weight: 2
-        - identifier: fr-education
-          name: "Éducation"
-          pageRef: "/fr/education/"
+        - identifier: en-education
+          name: "Education"
+          url: "/en/education/"
           weight: 3
-        - identifier: fr-projets
-          name: "Projets"
-          pageRef: "/fr/projects/"
+        - identifier: en-projects
+          name: "Projects"
+          url: "/en/projects/"
           weight: 4
-  en:
-    languageName: "English"
-    weight: 1
     params:
       profileMode:
-        enabled: true
-        title: "Romain Bastiani"
-        subtitle: "Quantitative Researcher @Inception Technology"
         buttons:
           - name: "Projects"
             url: "/en/projects/"
           - name: "CV"
             url: "/cv.pdf"
+  fr:
     menu:
       main:
-        - identifier: en-home
-          name: "Home"
-          pageRef: "/en/"
+        - identifier: fr-accueil
+          name: "Accueil"
+          url: "/fr/"
           weight: 1
-        - identifier: en-experience
-          name: "Experience"
-          pageRef: "/en/experience/"
+        - identifier: fr-experiences
+          name: "Expériences"
+          url: "/fr/experience/"
           weight: 2
-        - identifier: en-education
-          name: "Education"
-          pageRef: "/en/education/"
+        - identifier: fr-education
+          name: "Éducation"
+          url: "/fr/education/"
           weight: 3
-        - identifier: en-projects
-          name: "Projects"
-          pageRef: "/en/projects/"
+        - identifier: fr-projets
+          name: "Projets"
+          url: "/fr/projects/"
           weight: 4
+    params:
+      profileMode:
+        buttons:
+          - name: "Projets"
+            url: "/fr/projects/"
+          - name: "CV"
+            url: "/cv.pdf"
 
