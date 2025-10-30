@@ -1,6 +1,6 @@
 ---
 title: "Experience"
-layout: "single"
+layout: "list"
 ---
 
 ## Inception Technology — Quantitative Researcher
