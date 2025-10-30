@@ -6,6 +6,7 @@ theme: "PaperMod"
 # Génération dans docs/ pour GitHub Pages (paramétrable côté Pages)
 publishDir: "docs"
 defaultContentLanguage: "en"
+defaultContentLanguageInSubdir: true
 
 pagination:
   pagerSize: 10
@@ -41,8 +42,8 @@ params:
     imageUrl: "/Linkedin PP.jpg"
     imageTitle: "Photo de profil"
     buttons:
-      - name: "Projets"
-        url: "/projects/"
+      - name: "Projects"
+        url: "/en/projects/"
       - name: "CV"
         url: "/cv.pdf"
 
@@ -53,19 +54,7 @@ params:
       url: "https://www.linkedin.com/in/romain-bastiani-118072173/"
 
 menu:
-  main:
-    - name: "Accueil"
-      url: "/"
-      weight: 1
-    - name: "Expériences"
-      url: "/experience/"
-      weight: 2
-    - name: "Éducation"
-      url: "/education/"
-      weight: 3
-    - name: "Projets"
-      url: "/projects/"
-      weight: 4
+  # menus spécifiques par langue définis dans languages: (ci-dessous)
 
 permalinks:
   posts: "/posts/:slug/"
@@ -85,6 +74,30 @@ languages:
   fr:
     languageName: "Français"
     weight: 2
+    params:
+      profileMode:
+        enabled: true
+        title: "Romain Bastiani"
+        subtitle: "Quantitative Researcher @Inception Technology"
+        buttons:
+          - name: "Projets"
+            url: "/fr/projects/"
+          - name: "CV"
+            url: "/cv.pdf"
+    menu:
+      main:
+        - name: "Accueil"
+          url: "/fr/"
+          weight: 1
+        - name: "Expériences"
+          url: "/fr/experience/"
+          weight: 2
+        - name: "Éducation"
+          url: "/fr/education/"
+          weight: 3
+        - name: "Projets"
+          url: "/fr/projects/"
+          weight: 4
   en:
     languageName: "English"
     weight: 1
@@ -95,21 +108,21 @@ languages:
         subtitle: "Quantitative Researcher @Inception Technology"
         buttons:
           - name: "Projects"
-            url: "/projects/"
+            url: "/en/projects/"
           - name: "CV"
             url: "/cv.pdf"
     menu:
       main:
         - name: "Home"
-          url: "/"
+          url: "/en/"
           weight: 1
         - name: "Experience"
-          url: "/experience/"
+          url: "/en/experience/"
           weight: 2
         - name: "Education"
-          url: "/education/"
+          url: "/en/education/"
           weight: 3
         - name: "Projects"
-          url: "/projects/"
+          url: "/en/projects/"
           weight: 4
 
