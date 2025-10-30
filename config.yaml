@@ -5,6 +5,7 @@ theme: "PaperMod"
 
 # Génération dans docs/ pour GitHub Pages (paramétrable côté Pages)
 publishDir: "docs"
+defaultContentLanguage: "fr"
 
 pagination:
   pagerSize: 10
@@ -20,7 +21,7 @@ outputs:
 params:
   env: production
   title: "Romain Bastiani"
-  description: "Portfolio de Quantitative Researcher — disponible à partir d'avril 2026"
+  description: "Quantitative Researcher spécialisé en modèles factoriels, trend‑following et marchés de matières premières. Python/ML, data tooling et stratégies systématiques."
   keywords: ["Portfolio", "Blog", "Hugo", "PaperMod"]
   author: "Romain Bastiani"
   DateFormat: "2006-01-02"
@@ -36,7 +37,7 @@ params:
   profileMode:
     enabled: true
     title: "Romain Bastiani"
-    subtitle: "Quantitative Researcher — à la recherche d'un poste de Quantitative Analyst (avril 2026)"
+    subtitle: "Quantitative Researcher spécialisé en modèles factoriels, trend‑following et marchés de matières premières. Je conçois des pipelines de recherche, des outils data et des stratégies systématiques en Python (pandas, NumPy, scikit‑learn), à l’interface entre recherche quantitative et engineering. Intérêts: flux CTA, microstructure de marché, gestion des risques."
     imageUrl: "/Linkedin PP.jpg"
     imageTitle: "Photo de profil"
     buttons:
@@ -79,4 +80,31 @@ privacy:
     privacyEnhanced: true
   x:
     enableDNT: true
+
+languages:
+  fr:
+    languageName: "Français"
+    weight: 1
+  en:
+    languageName: "English"
+    weight: 2
+    params:
+      profileMode:
+        enabled: true
+        title: "Romain Bastiani"
+        subtitle: "Quantitative Researcher focused on factor models, trend‑following, and commodity markets. I build research pipelines, data tooling, and systematic strategies in Python (pandas, NumPy, scikit‑learn), bridging quantitative research and engineering. Interests: CTA flows, market microstructure, risk management."
+    menu:
+      main:
+        - name: "Home"
+          url: "/en/"
+          weight: 1
+        - name: "Experience"
+          url: "/en/experience/"
+          weight: 2
+        - name: "Education"
+          url: "/en/education/"
+          weight: 3
+        - name: "Projects"
+          url: "/en/projects/"
+          weight: 4
 
