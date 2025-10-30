@@ -1,0 +1,11 @@
+{
+  "name": "portfolio-hugo",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "hugo server -D",
+    "build": "hugo --gc --minify",
+    "deploy": "hugo --gc --minify && git subtree push --prefix docs origin gh-pages"
+  }
+}
+

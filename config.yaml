@@ -1,0 +1,78 @@
+baseURL: "https://333rosky.github.io/"
+title: "Rosky"
+languageCode: "fr-fr"
+theme: "PaperMod"
+
+# Génération dans docs/ pour GitHub Pages (paramétrable côté Pages)
+publishDir: "docs"
+
+paginate: 10
+enableRobotsTXT: true
+canonifyURLs: true
+
+outputs:
+  home:
+    - HTML
+    - RSS
+    - JSON
+
+params:
+  env: production
+  title: "Rosky"
+  description: "Portfolio et blog"
+  keywords: ["Portfolio", "Blog", "Hugo", "PaperMod"]
+  author: "Rosky"
+  DateFormat: "2006-01-02"
+  defaultTheme: auto
+  disableThemeToggle: false
+  ShowBreadCrumbs: true
+  ShowReadingTime: false
+  ShowShareButtons: false
+  ShowPostNavLinks: true
+  ShowCodeCopyButtons: true
+  comments: false
+
+  profileMode:
+    enabled: true
+    title: "Rosky"
+    subtitle: "Ingénieur / Data / Quant — Portfolio minimal propulsé par Hugo"
+    imageUrl: "/Linkedin PP.jpg"
+    imageTitle: "Photo de profil"
+    buttons:
+      - name: "Projets"
+        url: "/projects/"
+      - name: "CV"
+        url: "/cv.pdf"
+
+  socialIcons:
+    - name: github
+      url: "https://github.com/333Rosky"
+    - name: linkedin
+      url: "https://www.linkedin.com/in/"
+
+menu:
+  main:
+    - name: "Accueil"
+      url: "/"
+      weight: 1
+    - name: "Articles"
+      url: "/posts/"
+      weight: 2
+    - name: "Projets"
+      url: "/projects/"
+      weight: 3
+
+permalinks:
+  posts: "/posts/:slug/"
+
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
+
+privacy:
+  youtube:
+    privacyEnhanced: true
+  twitter:
+    enableDNT: true
+
