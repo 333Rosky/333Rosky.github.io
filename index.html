@@ -1,1 +1,83 @@
-<!doctype html><html lang="en"><head><meta charset="UTF-8"/><link rel="icon" type="image/svg+xml" href="/vite.svg"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Romain Bastiani - Portfolio</title><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"><script defer="defer" src="/static/js/main.7f01da1a.js"></script><link href="/static/css/main.cab1679c.css" rel="stylesheet"></head><body><div id="root"></div><script type="module" src="/src/main.tsx"></script></body></html>
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Romain Bastiani — Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="/favicon.ico" />
+    <style>
+      :root { color-scheme: light dark; }
+      * { box-sizing: border-box; }
+      html, body { height: 100%; margin: 0; }
+      body {
+        font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+        line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        background: #0b0c10;
+        color: #eaf0f6;
+        display: grid;
+        place-items: center;
+        padding: 24px;
+      }
+      .card {
+        width: 100%;
+        max-width: 640px;
+        background: rgba(255,255,255,0.04);
+        backdrop-filter: blur(6px);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 16px;
+        padding: 24px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+      }
+      h1 { font-size: 28px; margin: 0 0 8px; letter-spacing: 0.2px; }
+      .role { opacity: 0.85; margin: 0 0 16px; font-weight: 600; }
+      .bio { opacity: 0.8; margin: 0 0 24px; }
+      .actions { display: grid; grid-template-columns: 1fr; gap: 12px; }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 12px 16px;
+        border-radius: 12px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: transform 0.08s ease, background 0.2s ease, color 0.2s ease;
+        border: 1px solid rgba(255,255,255,0.12);
+      }
+      .btn.primary { background: #3b82f6; color: #fff; border-color: #3b82f6; }
+      .btn.secondary { background: rgba(255,255,255,0.06); color: #eaf0f6; }
+      .btn:active { transform: translateY(1px); }
+      .links { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 12px; }
+      .muted { opacity: 0.6; font-size: 14px; margin-top: 20px; }
+      @media (min-width: 560px) { .actions { grid-template-columns: 1fr 1fr; } }
+    </style>
+  </head>
+  <body>
+    <main class="card" aria-label="Présentation">
+      <h1>Romain Bastiani</h1>
+      <p class="role">Quant • Data/Finance</p>
+      <p class="bio">Portfolio très simple, pensé pour le mobile. Téléchargez mon CV ou contactez-moi.</p>
+
+      <div class="actions">
+        <a class="btn primary" href="/cv.pdf" download>
+          Télécharger mon CV
+        </a>
+        <a class="btn secondary" href="mailto:prenom.nom@email.com">
+          Me contacter par email
+        </a>
+      </div>
+
+      <div class="links">
+        <a class="btn secondary" href="https://linkedin.com/in/votre-profil" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a class="btn secondary" href="https://github.com/333Rosky" target="_blank" rel="noopener noreferrer">GitHub</a>
+      </div>
+
+      <p class="muted">Astuce: placez un fichier <strong>cv.pdf</strong> à la racine du projet.</p>
+    </main>
+  </body>
+  </html>
