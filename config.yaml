@@ -1,0 +1,115 @@
+baseURL: "https://333rosky.github.io/"
+title: "Romain Bastiani"
+languageCode: "en"
+theme: "PaperMod"
+
+# Génération dans docs/ pour GitHub Pages (paramétrable côté Pages)
+publishDir: "docs"
+defaultContentLanguage: "en"
+
+pagination:
+  pagerSize: 10
+enableRobotsTXT: true
+canonifyURLs: true
+
+outputs:
+  home:
+    - HTML
+    - RSS
+    - JSON
+
+params:
+  env: production
+  title: "Romain Bastiani"
+  description: "Quantitative Researcher @Inception Technology"
+  keywords: ["Portfolio", "Blog", "Hugo", "PaperMod"]
+  author: "Romain Bastiani"
+  DateFormat: "2006-01-02"
+  defaultTheme: auto
+  disableThemeToggle: false
+  ShowBreadCrumbs: true
+  ShowReadingTime: false
+  ShowShareButtons: false
+  ShowPostNavLinks: true
+  ShowCodeCopyButtons: true
+  comments: false
+
+  profileMode:
+    enabled: true
+    title: "Romain Bastiani"
+    subtitle: "Quantitative Researcher @Inception Technology"
+    imageUrl: "/Linkedin PP.jpg"
+    imageTitle: "Photo de profil"
+    buttons:
+      - name: "Projets"
+        url: "/projects/"
+      - name: "CV"
+        url: "/cv.pdf"
+
+  socialIcons:
+    - name: github
+      url: "https://github.com/333Rosky"
+    - name: linkedin
+      url: "https://www.linkedin.com/in/romain-bastiani-118072173/"
+
+menu:
+  main:
+    - name: "Accueil"
+      url: "/"
+      weight: 1
+    - name: "Expériences"
+      url: "/experience/"
+      weight: 2
+    - name: "Éducation"
+      url: "/education/"
+      weight: 3
+    - name: "Projets"
+      url: "/projects/"
+      weight: 4
+
+permalinks:
+  posts: "/posts/:slug/"
+
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
+
+privacy:
+  youtube:
+    privacyEnhanced: true
+  x:
+    enableDNT: true
+
+languages:
+  fr:
+    languageName: "Français"
+    weight: 2
+  en:
+    languageName: "English"
+    weight: 1
+    params:
+      profileMode:
+        enabled: true
+        title: "Romain Bastiani"
+        subtitle: "Quantitative Researcher @Inception Technology"
+        buttons:
+          - name: "Projects"
+            url: "/projects/"
+          - name: "CV"
+            url: "/cv.pdf"
+    menu:
+      main:
+        - name: "Home"
+          url: "/"
+          weight: 1
+        - name: "Experience"
+          url: "/experience/"
+          weight: 2
+        - name: "Education"
+          url: "/education/"
+          weight: 3
+        - name: "Projects"
+          url: "/projects/"
+          weight: 4
+
