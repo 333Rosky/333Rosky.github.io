@@ -1,5 +1,5 @@
 baseURL: "https://333rosky.github.io/"
-title: "Rosky"
+title: "Romain Bastiani"
 languageCode: "fr-fr"
 theme: "PaperMod"
 
@@ -19,10 +19,10 @@ outputs:
 
 params:
   env: production
-  title: "Rosky"
-  description: "Portfolio et blog"
+  title: "Romain Bastiani"
+  description: "Portfolio de Quantitative Researcher — disponible à partir d'avril 2026"
   keywords: ["Portfolio", "Blog", "Hugo", "PaperMod"]
-  author: "Rosky"
+  author: "Romain Bastiani"
   DateFormat: "2006-01-02"
   defaultTheme: auto
   disableThemeToggle: false
@@ -35,8 +35,8 @@ params:
 
   profileMode:
     enabled: true
-    title: "Rosky"
-    subtitle: "Ingénieur / Data / Quant — Portfolio minimal propulsé par Hugo"
+    title: "Romain Bastiani"
+    subtitle: "Quantitative Researcher — à la recherche d'un poste de Quantitative Analyst (avril 2026)"
     imageUrl: "/Linkedin PP.jpg"
     imageTitle: "Photo de profil"
     buttons:
@@ -49,19 +49,22 @@ params:
     - name: github
       url: "https://github.com/333Rosky"
     - name: linkedin
-      url: "https://www.linkedin.com/in/"
+      url: "https://www.linkedin.com/in/romain-bastiani-118072173/"
 
 menu:
   main:
     - name: "Accueil"
       url: "/"
       weight: 1
-    - name: "Articles"
-      url: "/posts/"
+    - name: "Expériences"
+      url: "/experience/"
       weight: 2
+    - name: "Éducation"
+      url: "/education/"
+      weight: 3
     - name: "Projets"
       url: "/projects/"
-      weight: 3
+      weight: 4
 
 permalinks:
   posts: "/posts/:slug/"
