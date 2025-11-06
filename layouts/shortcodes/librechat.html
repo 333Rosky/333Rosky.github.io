@@ -1,0 +1,30 @@
+{{- $url := .Get "url" -}}
+{{- if not $url -}}
+  {{- $url = site.Params.librechatUrl -}}
+{{- end -}}
+{{- $title := .Get "title" -}}
+{{- $height := .Get "height" | default "600px" -}}
+{{- $frameTitle := $title -}}
+{{- if not $frameTitle -}}
+  {{- $frameTitle = "LibreChat assistant" -}}
+{{- end -}}
+
+{{- if $url -}}
+<div class="librechat-container">
+  {{- with $title }}
+  <p class="librechat-heading"><strong>{{ . }}</strong></p>
+  {{- end }}
+  <iframe
+    src="{{ $url }}"
+    title="{{ $frameTitle }}"
+    loading="lazy"
+    style="width: 100%; min-height: {{ $height }}; border: 1px solid #e5e5e5; border-radius: 12px;">
+  </iframe>
+  <p class="librechat-footnote">Powered by LibreChat.</p>
+</div>
+{{- else -}}
+<div class="librechat-placeholder">
+  <p><strong>LibreChat is not configured yet.</strong></p>
+  <p>Set <code>params.librechatUrl</code> in <code>config.yaml</code> or pass a <code>url</code> parameter to the shortcode.</p>
+</div>
+{{- end -}}

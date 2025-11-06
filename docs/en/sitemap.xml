@@ -43,6 +43,8 @@
                 href="http://localhost:1313/tags/"
                 />
   </url><url>
+    <loc>http://localhost:1313/fr/</loc>
+  </url><url>
     <loc>http://localhost:1313/categories/</loc>
     <xhtml:link
                 rel="alternate"
@@ -59,18 +61,20 @@
   </url><url>
     <loc>http://localhost:1313/fr/education/</loc>
   </url><url>
-    <loc>http://localhost:1313/en/</loc>
-  </url><url>
     <loc>http://localhost:1313/en/experience/</loc>
   </url><url>
     <loc>http://localhost:1313/fr/experience/</loc>
   </url><url>
-    <loc>http://localhost:1313/fr/</loc>
+    <loc>http://localhost:1313/en/</loc>
   </url><url>
     <loc>http://localhost:1313/en/projects/</loc>
   </url><url>
     <loc>http://localhost:1313/fr/projects/</loc>
   </url><url>
     <loc>http://localhost:1313/projects/</loc>
+  </url><url>
+    <loc>http://localhost:1313/fr/recherche/</loc>
+  </url><url>
+    <loc>http://localhost:1313/en/search/</loc>
   </url>
 </urlset>
