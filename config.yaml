@@ -91,7 +91,7 @@ languages:
           - name: "Projects"
             url: "/en/projects/"
           - name: "CV"
-            url: "/cv.pdf"
+            url: "/Resume Romain Bastiani.pdf"
   fr:
     menu:
       main:
@@ -117,5 +117,5 @@ languages:
           - name: "Projets"
             url: "/fr/projects/"
           - name: "CV"
-            url: "/cv.pdf"
+            url: "/Resume Romain Bastiani.pdf"
 
