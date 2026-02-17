@@ -1,0 +1,170 @@
+{{- define "main" }}
+
+{{- if not .IsHome | and .Title }}
+<header class="page-header">
+    {{- partial "breadcrumbs.html" . }}
+    <h1>{{ .Title }}</h1>
+    {{- if .Description }}
+    <div class="post-description">
+        {{ .Description | markdownify }}
+    </div>
+    {{- end }}
+</header>
+{{- end }}
+
+{{/* Load Google Fonts */}}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+{{/* Load timeline CSS */}}
+{{- $timeline := resources.Get "css/timeline_v2.css" -}}
+{{- if $timeline -}}
+<link rel="stylesheet" href="{{ $timeline.RelPermalink }}">
+{{- end -}}
+
+{{- if .Content }}
+<div class="post-content timeline-content">
+    {{ .Content }}
+</div>
+{{- end }}
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    var containers = document.querySelectorAll(".timeline-content");
+    containers.forEach(function (container) {
+        if (!container || container.dataset.timelineEnhanced === "true") {
+            return;
+        }
+
+        var nodes = Array.from(container.children);
+        if (!nodes.some(function (n) { return n.tagName === "H2"; })) {
+            return;
+        }
+
+        var sections = [];
+        var current = [];
+
+        nodes.forEach(function (node) {
+            if (node.tagName === "HR") {
+                if (current.length) {
+                    sections.push(current);
+                    current = [];
+                }
+            } else {
+                current.push(node);
+            }
+        });
+
+        if (current.length) {
+            sections.push(current);
+        }
+
+        if (!sections.length) {
+            return;
+        }
+
+        var timeline = document.createElement("div");
+        timeline.className = "timeline";
+
+        sections.forEach(function (section) {
+            var heading = section.find(function (el) { return el.tagName === "H2"; });
+            if (!heading) {
+                return;
+            }
+
+            var meta = section.find(function (el) { return el.tagName === "P"; });
+            var list = section.find(function (el) { return el.tagName === "UL" || el.tagName === "OL"; });
+            var extraParagraphs = section.filter(function (el) { return el.tagName === "P" && el !== meta; });
+
+            var titleText = heading.textContent.trim();
+            var split = titleText.split("—");
+            var company = split.length > 1 ? split[0].trim() : "";
+            var role = split.length > 1 ? split.slice(1).join("—").trim() : titleText;
+
+            var location = "";
+            var date = "";
+            if (meta) {
+                var metaText = meta.textContent.trim();
+                var metaSplit = metaText.split("·");
+                location = metaSplit[0] ? metaSplit[0].trim() : "";
+                date = metaSplit[1] ? metaSplit.slice(1).join("·").trim() : "";
+            }
+
+            var item = document.createElement("div");
+            item.className = "timeline-item";
+
+            var dot = document.createElement("span");
+            dot.className = "timeline-dot";
+            dot.setAttribute("aria-hidden", "true");
+            item.appendChild(dot);
+
+            var card = document.createElement("article");
+            card.className = "timeline-card";
+
+            var header = document.createElement("div");
+            header.className = "card-header";
+
+            var roleEl = document.createElement("h3");
+            roleEl.className = "card-role";
+            roleEl.textContent = role;
+            header.appendChild(roleEl);
+
+            if (company) {
+                var companyEl = document.createElement("p");
+                companyEl.className = "card-company";
+                companyEl.textContent = company;
+                header.appendChild(companyEl);
+            }
+
+            var hasMeta = location || date;
+            if (hasMeta) {
+                var metaWrap = document.createElement("div");
+                metaWrap.className = "card-meta";
+
+                if (location) {
+                    var locationEl = document.createElement("span");
+                    locationEl.className = "card-location";
+                    locationEl.textContent = location;
+                    metaWrap.appendChild(locationEl);
+                }
+
+                if (date) {
+                    var dateEl = document.createElement("span");
+                    dateEl.className = "card-date";
+                    dateEl.textContent = date;
+                    metaWrap.appendChild(dateEl);
+                }
+
+                header.appendChild(metaWrap);
+            }
+
+            card.appendChild(header);
+
+            var body = document.createElement("div");
+            body.className = "card-body";
+            if (list) {
+                body.appendChild(list.cloneNode(true));
+            } else {
+                extraParagraphs.forEach(function (paragraph) {
+                    body.appendChild(paragraph.cloneNode(true));
+                });
+            }
+
+            card.appendChild(body);
+            item.appendChild(card);
+            timeline.appendChild(item);
+        });
+
+        if (!timeline.children.length) {
+            return;
+        }
+
+        container.innerHTML = "";
+        container.appendChild(timeline);
+        container.dataset.timelineEnhanced = "true";
+    });
+});
+</script>
+
+{{- end }}{{- /* end main */ -}}

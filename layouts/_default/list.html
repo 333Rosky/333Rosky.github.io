@@ -1,0 +1,281 @@
+{{- define "main" }}
+
+{{- if (and site.Params.profileMode.enabled .IsHome) }}
+{{- partial "index_profile.html" . }}
+{{- else }} {{/* if not profileMode */}}
+
+{{- if not .IsHome | and .Title }}
+<header class="page-header">
+  {{- partial "breadcrumbs.html" . }}
+  <h1>
+    {{ .Title }}
+    {{- if and (or (eq .Kind `term`) (eq .Kind `section`)) (.Param "ShowRssButtonInSectionTermList") }}
+    {{- with .OutputFormats.Get "rss" }}
+    <a href="{{ .RelPermalink }}" title="RSS" aria-label="RSS">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" height="23">
+        <path d="M4 11a9 9 0 0 1 9 9" />
+        <path d="M4 4a16 16 0 0 1 16 16" />
+        <circle cx="5" cy="19" r="1" />
+      </svg>
+    </a>
+    {{- end }}
+    {{- end }}
+  </h1>
+  {{- if .Description }}
+  <div class="post-description">
+    {{ .Description | markdownify }}
+  </div>
+  {{- end }}
+</header>
+{{- end }}
+
+{{- $isTimelineSection := and (eq .Kind "section") (or (eq .Section "experience") (eq .Section "education")) -}}
+{{- if $isTimelineSection -}}
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+{{- $timeline := resources.Get "css/timeline_v2.css" -}}
+{{- if $timeline -}}
+<link rel="stylesheet" href="{{ $timeline.RelPermalink }}">
+{{- end -}}
+
+{{- if .Content }}
+<div class="post-content timeline-content">
+  {{- if not (.Param "disableAnchoredHeadings") }}
+  {{- partial "anchored_headings.html" .Content -}}
+  {{- else }}{{ .Content }}{{ end }}
+</div>
+{{- end }}
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  var containers = document.querySelectorAll(".timeline-content");
+  containers.forEach(function (container) {
+    if (!container || container.dataset.timelineEnhanced === "true") {
+      return;
+    }
+
+    var nodes = Array.from(container.children);
+    if (!nodes.some(function (n) { return n.tagName === "H2"; })) {
+      return;
+    }
+
+    var sections = [];
+    var current = [];
+
+    nodes.forEach(function (node) {
+      if (node.tagName === "HR") {
+        if (current.length) {
+          sections.push(current);
+          current = [];
+        }
+      } else {
+        current.push(node);
+      }
+    });
+
+    if (current.length) {
+      sections.push(current);
+    }
+
+    if (!sections.length) {
+      return;
+    }
+
+    var timeline = document.createElement("div");
+    timeline.className = "timeline";
+
+    sections.forEach(function (section) {
+      var heading = section.find(function (el) { return el.tagName === "H2"; });
+      if (!heading) {
+        return;
+      }
+
+      var meta = section.find(function (el) { return el.tagName === "P"; });
+      var list = section.find(function (el) { return el.tagName === "UL" || el.tagName === "OL"; });
+      var extraParagraphs = section.filter(function (el) { return el.tagName === "P" && el !== meta; });
+
+      var titleText = heading.textContent.trim();
+      var split = titleText.split("—");
+      var company = split.length > 1 ? split[0].trim() : "";
+      var role = split.length > 1 ? split.slice(1).join("—").trim() : titleText;
+
+      var location = "";
+      var date = "";
+      if (meta) {
+        var metaText = meta.textContent.trim();
+        var metaSplit = metaText.split("·");
+        location = metaSplit[0] ? metaSplit[0].trim() : "";
+        date = metaSplit[1] ? metaSplit.slice(1).join("·").trim() : "";
+      }
+
+      var item = document.createElement("div");
+      item.className = "timeline-item";
+
+      var dot = document.createElement("span");
+      dot.className = "timeline-dot";
+      dot.setAttribute("aria-hidden", "true");
+      item.appendChild(dot);
+
+      var card = document.createElement("article");
+      card.className = "timeline-card";
+
+      var header = document.createElement("div");
+      header.className = "card-header";
+
+      var roleEl = document.createElement("h3");
+      roleEl.className = "card-role";
+      roleEl.textContent = role;
+      header.appendChild(roleEl);
+
+      if (company) {
+        var companyEl = document.createElement("p");
+        companyEl.className = "card-company";
+        companyEl.textContent = company;
+        header.appendChild(companyEl);
+      }
+
+      if (location || date) {
+        var metaWrap = document.createElement("div");
+        metaWrap.className = "card-meta";
+
+        if (location) {
+          var locationEl = document.createElement("span");
+          locationEl.className = "card-location";
+          locationEl.textContent = location;
+          metaWrap.appendChild(locationEl);
+        }
+
+        if (date) {
+          var dateEl = document.createElement("span");
+          dateEl.className = "card-date";
+          dateEl.textContent = date;
+          metaWrap.appendChild(dateEl);
+        }
+
+        header.appendChild(metaWrap);
+      }
+
+      card.appendChild(header);
+
+      var body = document.createElement("div");
+      body.className = "card-body";
+      if (list) {
+        body.appendChild(list.cloneNode(true));
+      } else {
+        extraParagraphs.forEach(function (paragraph) {
+          body.appendChild(paragraph.cloneNode(true));
+        });
+      }
+
+      card.appendChild(body);
+      item.appendChild(card);
+      timeline.appendChild(item);
+    });
+
+    if (!timeline.children.length) {
+      return;
+    }
+
+    container.innerHTML = "";
+    container.appendChild(timeline);
+    container.dataset.timelineEnhanced = "true";
+  });
+});
+</script>
+
+{{- else -}}
+
+{{- if .Content }}
+<div class="post-content">
+  {{- if not (.Param "disableAnchoredHeadings") }}
+  {{- partial "anchored_headings.html" .Content -}}
+  {{- else }}{{ .Content }}{{ end }}
+</div>
+{{- end }}
+
+{{- $pages := union .RegularPages .Sections }}
+
+{{- if .IsHome }}
+{{- $pages = where site.RegularPages "Type" "in" site.Params.mainSections }}
+{{- $pages = where $pages "Params.hiddenInHomeList" "!=" "true"  }}
+{{- end }}
+
+{{- $paginator := .Paginate $pages }}
+
+{{- if and .IsHome site.Params.homeInfoParams (eq $paginator.PageNumber 1) }}
+{{- partial "home_info.html" . }}
+{{- end }}
+
+{{- $term := .Data.Term }}
+{{- range $index, $page := $paginator.Pages }}
+
+{{- $class := "post-entry" }}
+
+{{- $user_preferred := or site.Params.disableSpecial1stPost site.Params.homeInfoParams }}
+{{- if (and $.IsHome (eq $paginator.PageNumber 1) (eq $index 0) (not $user_preferred)) }}
+{{- $class = "first-entry" }}
+{{- else if $term }}
+{{- $class = "post-entry tag-entry" }}
+{{- end }}
+
+<article class="{{ $class }}">
+  {{- $isHidden := (.Param "cover.hiddenInList") | default (.Param "cover.hidden") | default false }}
+  {{- partial "cover.html" (dict "cxt" . "IsSingle" false "isHidden" $isHidden) }}
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">
+      {{- .Title }}
+      {{- if .Draft }}
+      <span class="entry-hint" title="Draft">
+        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" fill="currentColor">
+          <path
+            d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
+        </svg>
+      </span>
+      {{- end }}
+    </h2>
+  </header>
+  {{- if (ne (.Param "hideSummary") true) }}
+  <div class="entry-content">
+    <p>{{ .Summary | plainify | htmlUnescape }}{{ if .Truncated }}...{{ end }}</p>
+  </div>
+  {{- end }}
+  {{- if not (.Param "hideMeta") }}
+  <footer class="entry-footer">
+    {{- partial "post_meta.html" . -}}
+  </footer>
+  {{- end }}
+  <a class="entry-link" aria-label="post link to {{ .Title | plainify }}" href="{{ .Permalink }}"></a>
+</article>
+{{- end }}
+
+{{- if gt $paginator.TotalPages 1 }}
+<footer class="page-footer">
+  <nav class="pagination">
+    {{- if $paginator.HasPrev }}
+    <a class="prev" href="{{ $paginator.Prev.URL | absURL }}">
+      «&nbsp;{{ i18n "prev_page" }}&nbsp;
+      {{- if (.Param "ShowPageNums") }}
+      {{- sub $paginator.PageNumber 1 }}/{{ $paginator.TotalPages }}
+      {{- end }}
+    </a>
+    {{- end }}
+    {{- if $paginator.HasNext }}
+    <a class="next" href="{{ $paginator.Next.URL | absURL }}">
+      {{- i18n "next_page" }}&nbsp;
+      {{- if (.Param "ShowPageNums") }}
+      {{- add 1 $paginator.PageNumber }}/{{ $paginator.TotalPages }}
+      {{- end }}&nbsp;»
+    </a>
+    {{- end }}
+  </nav>
+</footer>
+{{- end }}
+
+{{- end -}}
+
+{{- end }}{{/* end profileMode */}}
+
+{{- end }}{{- /* end main */ -}}
