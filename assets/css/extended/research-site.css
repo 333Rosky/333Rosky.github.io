@@ -90,11 +90,30 @@ a {
     grid-template-columns: minmax(0, 1fr) 240px;
     gap: 72px;
     align-items: center;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
     min-height: calc(100vh - 140px);
     padding: 64px 0;
 }
 
+.attractor-canvas {
+    position: absolute;
+    top: 50%;
+    right: -116px;
+    z-index: 0;
+    width: min(58vw, 620px);
+    height: min(58vw, 620px);
+    min-width: 440px;
+    min-height: 440px;
+    transform: translateY(-50%);
+    opacity: 0.72;
+    pointer-events: none;
+}
+
 .research-hero__copy {
+    position: relative;
+    z-index: 1;
     max-width: 640px;
 }
 
@@ -187,6 +206,8 @@ a {
 
 .research-portrait {
     display: block;
+    position: relative;
+    z-index: 1;
 }
 
 .research-photo-shell {
@@ -334,6 +355,16 @@ a {
         padding: 48px 0 60px;
     }
 
+    .attractor-canvas {
+        top: 52%;
+        right: -154px;
+        width: 520px;
+        height: 520px;
+        min-width: 0;
+        min-height: 0;
+        opacity: 0.48;
+    }
+
     .research-portrait {
         max-width: 220px;
     }
@@ -359,6 +390,14 @@ a {
 
     .research-hero h1 {
         font-size: 38px;
+    }
+
+    .attractor-canvas {
+        top: 168px;
+        right: -178px;
+        width: 380px;
+        height: 380px;
+        opacity: 0.36;
     }
 
     .research-role {

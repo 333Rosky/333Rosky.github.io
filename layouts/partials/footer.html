@@ -6,6 +6,10 @@
 
 {{- partial "extend_footer.html" . }}
 
+{{- if .IsHome }}
+<script src="{{ "js/halvorsen-attractor.js" | relURL }}"></script>
+{{- end }}
+
 <script>
     let menu = document.getElementById('menu');
     if (menu) {
