@@ -25,18 +25,19 @@ outputs:
 params:
   env: production
   title: "Romain Bastiani"
-  description: "Quantitative researcher focused on commodity positioning, macro factors, regime detection, and portfolio risk."
-  keywords: ["Quantitative research", "Commodity markets", "Systematic research", "Risk modelling", "Python"]
+  description: "Quantitative Researcher."
+  keywords: ["Quantitative Researcher", "Python", "Finance"]
   author: "Romain Bastiani"
   DateFormat: "2006-01-02"
-  defaultTheme: light
-  disableThemeToggle: false
+  defaultTheme: dark
+  disableThemeToggle: true
   ShowBreadCrumbs: true
   ShowReadingTime: false
   ShowShareButtons: false
   ShowPostNavLinks: true
   ShowCodeCopyButtons: true
   disableLangToggle: true
+  disableScrollToTop: true
   comments: false
 
   assets:
@@ -45,15 +46,15 @@ params:
     favicon32x32: "/favicon-32x32.png"
     apple_touch_icon: "/apple-touch-icon.png"
     safari_pinned_tab: "/safari-pinned-tab.svg"
-    theme_color: "#f6f7f2"
-    msapplication_TileColor: "#f6f7f2"
+    theme_color: "#050505"
+    msapplication_TileColor: "#050505"
 
   profileMode:
     enabled: true
     title: "Romain Bastiani"
     subtitle: "Quantitative Researcher"
     imageUrl: "/Linkedin PP.jpg"
-    imageTitle: "Photo de profil"
+    imageTitle: "Profile photo"
 
   socialIcons:
     - name: github
@@ -90,13 +91,13 @@ languages:
           name: "Experience"
           url: "/experience/"
           weight: 2
-        - identifier: en-education
-          name: "Education"
-          url: "/education/"
-          weight: 3
         - identifier: en-projects
           name: "Projects"
           url: "/projects/"
+          weight: 3
+        - identifier: en-cv
+          name: "CV"
+          url: "/Romain Bastiani Resume.pdf"
           weight: 4
     params:
       profileMode:

@@ -24,16 +24,5 @@ Paris, France · Jan 2025 — Jul 2025
 ## Funds Avenue — Risk Management Intern
 Luxembourg · Jul 2024 — Dec 2024
 
-- Assessed portfolio risk exposure using stress tests and Value-at-Risk (VaR) to support strategic decision-making.
-- Analyzed investment portfolios with Python and Excel models to quantify exposures and ensure accurate risk evaluation.
-- Produced risk management reports and presentations for senior management, simplifying complex assessments.
-- Designed and implemented strategies to minimize and manage investment risks, contributing to portfolio stability and profitability.
-
----
-
-## Radio France — Data Analyst Intern (Digital Department)
-Paris, France · May 2023 — Aug 2023
-
-- Built a user-friendly Python tool to support operations.
-- Managed and maintained a key part of the SQL databases, focusing on data integrity and security.
-
+- Assessed portfolio risk using stress tests and Value-at-Risk (VaR) via Python/Excel models and presented risk reports to senior management.
+- Applied multi-factor risk frameworks aligned with Axioma and Barra-style models for factor exposure analysis and systematic variance decomposition.
