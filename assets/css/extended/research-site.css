@@ -264,18 +264,6 @@ button#theme-toggle {
     filter: saturate(0.92) contrast(1.02);
 }
 
-.research-photo-meta {
-    display: flex;
-    justify-content: space-between;
-    gap: 16px;
-    margin-top: 11px;
-    color: var(--secondary);
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0;
-    text-transform: uppercase;
-}
-
 .research-signal-board {
     padding: 18px;
 }
@@ -622,7 +610,6 @@ button#theme-toggle {
         padding: 8px;
     }
 
-    .research-photo-meta,
     .research-signal-board {
         display: none;
     }
