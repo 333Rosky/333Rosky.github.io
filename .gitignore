@@ -2,6 +2,8 @@
 resources/
 public/
 .hugo_build.lock
+.hugo-server.*.log
+tmp/
 
 # Node
 node_modules/

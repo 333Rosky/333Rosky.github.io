@@ -1,0 +1,76 @@
+{{- $profile := site.Params.profileMode -}}
+{{- $name := $profile.title | default site.Title -}}
+{{- $image := $profile.imageUrl | default "/Linkedin PP.jpg" -}}
+{{- $imageTitle := $profile.imageTitle | default "Profile image" -}}
+{{- $experienceURL := "/experience/" -}}
+{{- $projectsURL := "/projects/" -}}
+{{- $cvURL := "/Romain Bastiani Resume.pdf" -}}
+{{- $role := $profile.subtitle | default "Quantitative Researcher" -}}
+
+<div class="profile research-home">
+  <section class="research-hero" aria-labelledby="research-home-title">
+    <div class="research-hero__copy">
+      <p class="research-eyebrow">
+        Quantitative research · commodity markets · risk
+      </p>
+      <h1 id="research-home-title">{{ $name | markdownify }}</h1>
+      <p class="research-role">{{ $role | markdownify }}</p>
+      <p class="research-lede">
+        Commodity positioning. Macro factors. Regime detection. Tail-risk diagnostics.
+      </p>
+
+      <div class="research-actions" aria-label="Primary links">
+        <a class="research-button research-button--primary" href="{{ $experienceURL | relURL }}">
+          Experience
+        </a>
+        <a class="research-button" href="{{ $projectsURL | relURL }}">
+          Projects
+        </a>
+        <a class="research-button" href="{{ $cvURL | relURL }}">
+          CV
+        </a>
+      </div>
+
+      <div class="research-social" aria-label="Public profiles">
+        {{- partial "social_icons.html" (dict "align" "") -}}
+      </div>
+    </div>
+
+    <aside class="research-portrait" aria-label="Research profile">
+      <div class="research-photo-shell">
+        <img draggable="false" src="{{ $image | relURL }}" alt="{{ $imageTitle }}" title="{{ $imageTitle }}" width="320" height="320" />
+        <div class="research-photo-meta">
+          <span>GMM</span>
+          <span>TSMOM</span>
+        </div>
+      </div>
+
+      <div class="research-signal-board">
+        <p>Research focus</p>
+        <ul>
+          <li>CTA flows & futures positioning</li>
+          <li>Macro factor attribution</li>
+          <li>Regime switching & tail risk</li>
+        </ul>
+      </div>
+    </aside>
+  </section>
+
+  <section class="research-scope" aria-label="Research axes">
+    <article>
+      <span class="research-scope__index">01</span>
+      <h2>Positioning</h2>
+      <p>Futures exposure, CTA flows, capacity utilization, saturation zones.</p>
+    </article>
+    <article>
+      <span class="research-scope__index">02</span>
+      <h2>Macro factors</h2>
+      <p>P&L attribution, systematic exposures, factor variance decomposition.</p>
+    </article>
+    <article>
+      <span class="research-scope__index">03</span>
+      <h2>Risk scenarios</h2>
+      <p>Market regimes, non-linear dependencies, tail positioning risk.</p>
+    </article>
+  </section>
+</div>

@@ -30,12 +30,11 @@
 </header>
 {{- end }}
 
-{{- $isTimelineSection := and (eq .Kind "section") (or (eq .Section "experience") (eq .Section "education")) -}}
+{{- $isExperienceSection := or (eq .Section "experience") (strings.HasSuffix .RelPermalink "/experience/") -}}
+{{- $isEducationSection := or (eq .Section "education") (strings.HasSuffix .RelPermalink "/education/") -}}
+{{- $isTimelineSection := and (eq .Kind "section") (or $isExperienceSection $isEducationSection) -}}
 {{- if $isTimelineSection -}}
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 {{- $timeline := resources.Get "css/timeline_v2.css" -}}
 {{- if $timeline -}}
 <link rel="stylesheet" href="{{ $timeline.RelPermalink }}">
@@ -97,7 +96,11 @@ document.addEventListener("DOMContentLoaded", function () {
       var list = section.find(function (el) { return el.tagName === "UL" || el.tagName === "OL"; });
       var extraParagraphs = section.filter(function (el) { return el.tagName === "P" && el !== meta; });
 
-      var titleText = heading.textContent.trim();
+      var headingClone = heading.cloneNode(true);
+      headingClone.querySelectorAll(".anchor").forEach(function (anchor) {
+        anchor.remove();
+      });
+      var titleText = headingClone.textContent.trim();
       var split = titleText.split("—");
       var company = split.length > 1 ? split[0].trim() : "";
       var role = split.length > 1 ? split.slice(1).join("—").trim() : titleText;

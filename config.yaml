@@ -11,7 +11,10 @@ defaultContentLanguageInSubdir: false
 pagination:
   pagerSize: 10
 enableRobotsTXT: true
-canonifyURLs: true
+canonifyURLs: false
+disableKinds:
+  - taxonomy
+  - term
 
 outputs:
   home:
@@ -22,23 +25,33 @@ outputs:
 params:
   env: production
   title: "Romain Bastiani"
-  description: "Quantitative Researcher @Inception Technology"
-  keywords: ["Portfolio", "Blog", "Hugo", "PaperMod"]
+  description: "Quantitative researcher focused on commodity positioning, macro factors, regime detection, and portfolio risk."
+  keywords: ["Quantitative research", "Commodity markets", "Systematic research", "Risk modelling", "Python"]
   author: "Romain Bastiani"
   DateFormat: "2006-01-02"
-  defaultTheme: auto
+  defaultTheme: light
   disableThemeToggle: false
   ShowBreadCrumbs: true
   ShowReadingTime: false
   ShowShareButtons: false
   ShowPostNavLinks: true
   ShowCodeCopyButtons: true
+  disableLangToggle: true
   comments: false
+
+  assets:
+    favicon: "/favicon.ico"
+    favicon16x16: "/favicon-16x16.png"
+    favicon32x32: "/favicon-32x32.png"
+    apple_touch_icon: "/apple-touch-icon.png"
+    safari_pinned_tab: "/safari-pinned-tab.svg"
+    theme_color: "#f6f7f2"
+    msapplication_TileColor: "#f6f7f2"
 
   profileMode:
     enabled: true
     title: "Romain Bastiani"
-    subtitle: "Quantitative Researcher @Inception Technology"
+    subtitle: "Quantitative Researcher"
     imageUrl: "/Linkedin PP.jpg"
     imageTitle: "Photo de profil"
 
@@ -47,9 +60,6 @@ params:
       url: "https://github.com/333Rosky"
     - name: linkedin
       url: "https://www.linkedin.com/in/romain-bastiani-118072173/"
-
-menu:
-  # menus spécifiques par langue définis dans languages: (ci-dessous)
 
 permalinks:
   posts: "/posts/:slug/"
@@ -67,55 +77,31 @@ privacy:
 
 languages:
   en:
+    languageName: "English"
+    languageCode: "en"
+    contentDir: "content/en"
     menu:
       main:
         - identifier: en-home
           name: "Home"
-          url: "/en/"
+          url: "/"
           weight: 1
         - identifier: en-experience
           name: "Experience"
-          url: "/en/experience/"
+          url: "/experience/"
           weight: 2
         - identifier: en-education
           name: "Education"
-          url: "/en/education/"
+          url: "/education/"
           weight: 3
         - identifier: en-projects
           name: "Projects"
-          url: "/en/projects/"
+          url: "/projects/"
           weight: 4
     params:
       profileMode:
         buttons:
           - name: "Projects"
-            url: "/en/projects/"
+            url: "/projects/"
           - name: "CV"
-            url: "/Resume Romain Bastiani.pdf"
-  fr:
-    menu:
-      main:
-        - identifier: fr-accueil
-          name: "Accueil"
-          url: "/fr/"
-          weight: 1
-        - identifier: fr-experiences
-          name: "Expériences"
-          url: "/fr/experience/"
-          weight: 2
-        - identifier: fr-education
-          name: "Éducation"
-          url: "/fr/education/"
-          weight: 3
-        - identifier: fr-projets
-          name: "Projets"
-          url: "/fr/projects/"
-          weight: 4
-    params:
-      profileMode:
-        buttons:
-          - name: "Projets"
-            url: "/fr/projects/"
-          - name: "CV"
-            url: "/Resume Romain Bastiani.pdf"
-
+            url: "/Romain Bastiani Resume.pdf"

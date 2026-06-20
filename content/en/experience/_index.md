@@ -5,19 +5,19 @@ title: "Experience"
 ## Inception Technology — Quantitative Researcher
 Paris, France · Jul 2025 — Apr 2026
 
-- Built two AI agents leveraging LLMs (OpenAI) to produce client-facing insights on commodity markets: CTA flows, flow sequencing, deferred orders, convexity, and crowding dynamics.
-- Performed prompt engineering to strengthen the system prompt, ensuring robust and client-aligned responses across a wide range of market queries.
-- Contributed to a Model Context Protocol (MCP) to enable more structured and context-aware interactions between AI agents and data.
+- Enhanced a macro factor lens to deliver structural P&L attribution and systematic risk diagnostics for commodity derivatives portfolios.
+- Developed a regime-switching scenario engine using Gaussian Mixture Models validated through time-series cross-validation.
+- Quantified non-linear factor dependencies and tail positioning risks across commodity markets.
 
 ---
 
 ## Inception Technology — Quantitative Researcher Intern
 Paris, France · Jan 2025 — Jul 2025
 
-- Researched high-capacity factor models and designed long/short strategies, including trend-following approaches based on Markowitz optimization.
-- Analyzed futures positioning using CFTC reports (Legacy, Disaggregated, Supplemental) to monitor CTA flows and systematic trader exposures.
-- Developed and backtested factor models in Python (pandas, NumPy, scikit-learn) using futures data across commodities (energy, agriculture, metals, softs).
-- Collaborated with engineering and analytics teams to integrate research insights into the core SaaS platform.
+- Enhanced a proprietary CTA/Trend positioning model with a Time Series Momentum framework inspired by Moskowitz, Ooi and Pedersen (2012).
+- Analyzed CFTC COT data to decompose Managed Money exposure into CTA/Trend, Index Traders, and Discretionary components.
+- Developed positioning diagnostics including capacity utilization, saturation zones, and flow convexity.
+- Worked in Python across futures datasets covering energy, agriculture, metals, and softs.
 
 ---
 
@@ -36,5 +36,4 @@ Paris, France · May 2023 — Aug 2023
 
 - Built a user-friendly Python tool to support operations.
 - Managed and maintained a key part of the SQL databases, focusing on data integrity and security.
-
 

@@ -1,0 +1,224 @@
+\documentclass[a4paper,10pt]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+\usepackage{fancyhdr}
+\usepackage[english]{babel}
+\usepackage{tabularx}
+\usepackage{ragged2e}
+\input{glyphtounicode}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot{}
+\setlength{\footskip}{4pt}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+%---------- MARGINS ----------
+\addtolength{\oddsidemargin}{-0.50in}
+\addtolength{\evensidemargin}{-0.50in}
+\addtolength{\textwidth}{1.1in}
+\addtolength{\topmargin}{-.6in}
+\addtolength{\textheight}{1.4in}
+
+\urlstyle{same}
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+%---------- SECTION TITLES ----------
+\titleformat{\section}
+  {\bfseries\raggedright\normalsize}
+  {}{0em}{}
+  [\vspace{2pt}\titlerule]
+
+\titlespacing*{\section}
+  {0pt}
+  {8pt}
+  {6pt}
+
+\pdfgentounicode=1
+
+%-------------------------
+% Custom commands
+
+\newcommand{\resumeItem}[1]{
+  \item\small{{#1 \vspace{-1pt}}}
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-1pt}\item
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & #2 \\[-2pt]
+      \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-6pt}
+}
+
+\newcommand{\resumeSubheadingDesc}[5]{
+  \vspace{-1pt}\item
+    \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & #2 \\[-2pt]
+      \textit{\small#3} & \textit{\small #4} \\[-1pt]
+      \multicolumn{2}{l}{\textit{\small #5}} \\
+    \end{tabular*}\vspace{-6pt}
+}
+
+\newcommand{\resumeSubSubheading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \textit{\small#1} & \textit{\small #2} \\
+    \end{tabular*}\vspace{-6pt}
+}
+
+\newcommand{\resumeProjectHeading}[2]{
+    \item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \small#1 & #2 \\
+    \end{tabular*}\vspace{-2pt}
+}
+
+\renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.12in, label={}, itemsep=4pt]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+
+\newcommand{\resumeItemListStart}{\begin{itemize}[itemsep=4.5pt, parsep=0pt, topsep=1pt, partopsep=0pt, leftmargin=0.20in]}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-4pt}}
+
+\newcommand{\resumeProjectItemListStart}{\begin{itemize}[itemsep=4.5pt, parsep=0pt, topsep=1pt, partopsep=0pt, leftmargin=0.20in]}
+\newcommand{\resumeProjectItemListEnd}{\end{itemize}\vspace{-4pt}}
+
+\renewcommand{\baselinestretch}{0.94}
+
+\begin{document}
+
+%----------HEADER----------
+\begin{center}
+    \vspace{-12pt}
+    \textbf{\LARGE \scshape Romain Bastiani} \\ \vspace{3pt}
+    (+33) 617108406 $|$ \href{mailto:romain.bastiani.03@gmail.com}{\underline{romain.bastiani.03@gmail.com}} $|$
+    \href{https://www.linkedin.com/in/romain-bastiani-118072173/}{\underline{LinkedIn}} \\ \vspace{6pt}
+    \textbf{Available for a full-time Quantitative Researcher position.}
+    \vspace{6pt}
+\end{center}
+
+%-----------WORK EXPERIENCE----------
+\section{Work Experience}
+\resumeSubHeadingListStart
+
+\resumeSubheadingDesc
+{Inception Technology}{Paris, France}
+{Quantitative Researcher - Macro and Systematic Commodities}{July 2025 - April 2026}
+{Start-up providing quantitative positioning intelligence tools to tier-1 global commodity trading houses (clients under NDA).}
+
+\resumeItemListStart
+\resumeItem{Leveraged and enhanced a \textbf{macro factor lens} to deliver structural P\&L attribution and systematic risk diagnostics for commodity derivatives portfolios.}
+\resumeItem{Developed a \textbf{regime-switching scenario engine} using \textbf{Gaussian Mixture Models (GMM)} validated through \textbf{Time-Series Cross-Validation} to capture non-linear factor dependencies and quantify tail positioning risks.}
+\resumeItem{\textit{Keywords: Macro Factor Modeling, Regime Detection, Gaussian Mixture Models (GMM), Time-Series Cross-Validation, Tail Risk Diagnostics.}}
+\resumeItemListEnd
+
+\resumeSubSubheading
+{Quantitative Researcher Intern}{Jan 2025 - July 2025}
+
+\resumeItemListStart
+\resumeItem{Enhanced Inception's proprietary \textbf{CTA/Trend positioning model} by integrating a \textbf{Time Series Momentum (TSMOM)} framework inspired by \textbf{Moskowitz, Ooi and Pedersen (2012)} to model systematic exposure dynamics across commodity futures.}
+\resumeItem{Analyzed \textbf{CFTC COT data} (Disaggregated \& Supplemental) to decompose Managed Money exposure into \textbf{CTA/Trend}, \textbf{Index Traders}, and \textbf{Discretionary} components.}
+\resumeItem{Developed positioning diagnostics including \textbf{capacity utilization}, \textbf{saturation zones}, and \textbf{flow convexity} to quantify asymmetric positioning risk and potential forced flows.}
+\resumeItem{\textit{Keywords: COT Analysis, CTA Positioning, Time Series Momentum, Flow Convexity, Position Saturation.}}
+\resumeItemListEnd
+
+\resumeSubheading
+{Funds Avenue}{Luxembourg}
+{Risk Management Intern}{July 2024 - Dec 2024}
+
+\resumeItemListStart
+\resumeItem{Assessed portfolio risk using \textbf{stress tests} and \textbf{Value-at-Risk (VaR)} via Python/Excel models and presented risk reports to senior management.}
+\resumeItem{Applied multi-factor risk frameworks aligned with \textbf{Axioma} and \textbf{Barra}-style models for factor exposure analysis and systematic variance decomposition.}
+\resumeItem{\textit{Keywords: Risk Management, Value-at-Risk (VaR), Stress Testing, Portfolio Analysis, Python, Axioma, Barra.}}
+\resumeItemListEnd
+
+\resumeSubHeadingListEnd
+
+%-----------EXTRACURRICULAR PROJECTS----------
+\section{Extracurricular Projects}
+\resumeSubHeadingListStart
+
+\resumeProjectHeading
+{\textbf{ENS / QRT Data Challenge - Asset Allocation Forecasting} $|$ \emph{Python, Machine Learning}}{Jun 2026}
+\resumeProjectItemListStart
+\resumeItem{Competing in an ENS-hosted data challenge set up by QRT to forecast portfolio movements from time-series and tabular data; achieved a \textbf{0.52 public test score} and currently rank in the \textbf{top 10\% on the private test leaderboard}.}
+\resumeProjectItemListEnd
+
+\resumeProjectHeading
+{\textbf{Guéant-Lehalle-Fernandez-Tapia (GLFT) Market Making Model} $|$ \emph{Python, NumPy, Pandas, Polars, SciPy}}{Sep 2025}
+\resumeProjectItemListStart
+\resumeItem{Implemented the closed-form optimal quoting strategy under inventory constraints from the Guéant-Lehalle-Fernandez-Tapia market making framework, an extension of Avellaneda-Stoikov.}
+\resumeItem{Built a realistic backtest including Poisson fills, inventory dynamics, maker fees, latency and stochastic slippage.}
+\resumeProjectItemListEnd
+
+\resumeProjectHeading
+{\textbf{Portfolio Optimization Strategy} $|$ \emph{Python, NumPy, SciPy, Matplotlib}}{Jan 2024}
+\resumeProjectItemListStart
+\resumeItem{Constructed optimal portfolios using Mean-Variance Optimization via \texttt{scipy.optimize} to maximize the Sharpe Ratio.}
+\resumeItem{Simulated thousands of portfolios (Monte Carlo) to visualize the Efficient Frontier and the Capital Market Line (CML).}
+\resumeProjectItemListEnd
+
+\resumeSubHeadingListEnd
+
+%-----------EDUCATION----------
+\section{Education}
+\resumeSubHeadingListStart
+
+\resumeSubheading
+{Neoma Business School}{Rouen, France}
+{MSc Corporate Finance \& Investment Banking $|$ \textbf{GPA: 4.0/4.0}}{Oct 2023 - Dec 2024}
+\resumeItemListStart
+\resumeItem{Double degree with ESIGELEC.}
+\resumeItem{Thesis: \textbf{Stochastic Models and Real Options in Corporate Valuation}.}
+\resumeItem{\textbf{Key Modules:} Financial Engineering, Advanced Corporate Finance, Mergers \& Acquisitions, Corporate Strategies.}
+\resumeItemListEnd
+
+\resumeSubheading
+{ESIGELEC Engineering School}{Rouen, France}
+{Engineering Degree in Financial Engineering (after PTSI Preparatory Classes) $|$ \textbf{Top 10\% of Class}}{Sep 2018 - Dec 2024}
+\resumeItemListStart
+\resumeItem{\textbf{Key Modules:} Advanced Probability, Machine Learning, Monte Carlo Simulation, Applied Statistics for Finance.}
+\resumeItemListEnd
+
+\resumeSubHeadingListEnd
+
+%-----------ADDITIONAL TRAINING----------
+\section{Additional Training}
+\resumeSubHeadingListStart
+
+\resumeSubheading
+{MIT - edX}{Online}
+{Quantitative Finance \& Machine Learning Certifications}{}
+\resumeItemListStart
+\resumeItem{\textbf{Mathematical Methods for Quantitative Finance:} Probability, stochastic processes (discrete \& continuous), It\^o calculus, time series.}
+\resumeItem{\textbf{Machine Learning with Python:} Linear models, clustering, recommender systems, CNN, generative models, reinforcement learning, NLP.}
+\resumeItemListEnd
+
+\resumeSubHeadingListEnd
+
+%-----------SKILLS----------
+\section{Skills \& Interests}
+\begin{itemize}[leftmargin=0.20in, label={}]
+\small{\item{
+\textbf{Languages}: French (native), English (C1) \\
+\textbf{Programming}: Python (NumPy, pandas, scipy, scikit-learn, Polars), SQL \\
+\textbf{IT}: Microsoft Office, \LaTeX \\
+\textbf{Interests}: Fencing (Regional Level \& Referee), French History
+}}
+\end{itemize}
+
+\end{document}

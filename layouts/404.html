@@ -1,0 +1,22 @@
+{{- define "main" -}}
+{{- $homeURL := "/" -}}
+{{- $projectsURL := "/projects/" -}}
+{{- $experienceURL := "/experience/" -}}
+
+<section class="not-found-page" aria-labelledby="not-found-title">
+  <p class="not-found-code">404</p>
+  <h1 id="not-found-title">Signal not found</h1>
+  <p>This page is no longer available. Use the main pages to get back to the CV, projects, or experience.</p>
+  <div class="not-found-actions" aria-label="Useful links">
+    <a class="research-button research-button--primary" href="{{ $homeURL | relURL }}">
+      Home
+    </a>
+    <a class="research-button" href="{{ $projectsURL | relURL }}">
+      Projects
+    </a>
+    <a class="research-button" href="{{ $experienceURL | relURL }}">
+      Experience
+    </a>
+  </div>
+</section>
+{{- end -}}

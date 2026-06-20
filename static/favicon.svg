@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Romain Bastiani">
+  <rect width="64" height="64" rx="10" fill="#0d6b57"/>
+  <path d="M14 44 27 32l10 7 13-19" fill="none" stroke="#f6f7f2" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="50" cy="20" r="5" fill="#a64924"/>
+  <text x="15" y="29" fill="#f6f7f2" font-family="Segoe UI, Arial, sans-serif" font-size="25" font-weight="800">R</text>
+</svg>
