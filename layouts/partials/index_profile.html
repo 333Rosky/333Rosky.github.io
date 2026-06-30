@@ -11,94 +11,31 @@
   <section class="research-hero" aria-labelledby="research-home-title">
     <canvas class="attractor-canvas" data-halvorsen-attractor aria-hidden="true"></canvas>
 
-    <div class="research-strip research-strip--top" aria-hidden="true">
-      <div class="research-strip__track">
-        <div class="research-frame research-frame--portrait">
-          <img draggable="false" src="{{ $image | relURL }}" alt="" width="320" height="320" />
-        </div>
-        <div class="research-frame research-frame--series">
-          <svg viewBox="0 0 240 120" focusable="false">
-            <path d="M0 82 C26 76 36 52 58 55 C82 58 87 88 111 78 C139 66 140 28 171 34 C201 40 204 82 240 58" />
-            <path d="M0 96 L240 96" />
-          </svg>
-        </div>
-        <div class="research-frame research-frame--heatmap">
-          {{- range seq 1 36 -}}<span></span>{{- end -}}
-        </div>
-        <div class="research-frame research-frame--frontier">
-          <svg viewBox="0 0 240 120" focusable="false">
-            <path d="M18 96 C70 86 95 48 137 33 C171 20 205 25 226 42" />
-            <circle cx="168" cy="25" r="4" />
-          </svg>
-        </div>
-        <div class="research-frame research-frame--bars">
-          {{- range seq 1 14 -}}<span></span>{{- end -}}
-        </div>
-        <div class="research-frame research-frame--scatter">
-          {{- range seq 1 28 -}}<span></span>{{- end -}}
-        </div>
-        <div class="research-frame research-frame--surface"></div>
-        <div class="research-frame research-frame--mesh"></div>
+    <div class="research-hero__copy">
+      <h1 id="research-home-title">{{ $name | markdownify }}</h1>
+      <p class="research-role">{{ $role | markdownify }}</p>
+
+      <div class="research-actions" aria-label="Primary links">
+        <a class="research-button research-button--primary" href="{{ $experienceURL | relURL }}">
+          Experience
+        </a>
+        <a class="research-button" href="{{ $projectsURL | relURL }}">
+          Projects
+        </a>
+        <a class="research-button" href="{{ $cvURL | relURL }}">
+          CV
+        </a>
+      </div>
+
+      <div class="research-social" aria-label="Public profiles">
+        {{- partial "social_icons.html" (dict "align" "") -}}
       </div>
     </div>
 
-    <div class="research-hero__body">
-      <div class="research-hero__copy">
-        <p class="research-role">{{ $role | markdownify }}</p>
-        <h1 id="research-home-title">
-          <span>Romain</span>
-          <span>Bastiani</span>
-        </h1>
+    <aside class="research-portrait" aria-label="Research profile">
+      <div class="research-photo-shell">
+        <img draggable="false" src="{{ $image | relURL }}" alt="{{ $imageTitle }}" title="{{ $imageTitle }}" width="320" height="320" />
       </div>
-
-      <div class="research-home-nav" aria-label="Primary links">
-        <div class="research-actions">
-          <a class="research-button research-button--primary" href="{{ $experienceURL | relURL }}">
-            Experience
-          </a>
-          <a class="research-button" href="{{ $projectsURL | relURL }}">
-            Projects
-          </a>
-          <a class="research-button" href="{{ $cvURL | relURL }}">
-            CV
-          </a>
-        </div>
-
-        <div class="research-social" aria-label="Public profiles">
-          {{- partial "social_icons.html" (dict "align" "") -}}
-        </div>
-      </div>
-    </div>
-
-    <div class="research-strip research-strip--bottom" aria-hidden="true">
-      <div class="research-strip__track">
-        <div class="research-frame research-frame--heatmap">
-          {{- range seq 1 36 -}}<span></span>{{- end -}}
-        </div>
-        <div class="research-frame research-frame--series">
-          <svg viewBox="0 0 240 120" focusable="false">
-            <path d="M0 76 C24 42 48 38 70 58 C95 80 105 92 128 64 C151 36 168 23 188 39 C209 56 217 74 240 48" />
-            <path d="M0 96 L240 96" />
-          </svg>
-        </div>
-        <div class="research-frame research-frame--bars">
-          {{- range seq 1 14 -}}<span></span>{{- end -}}
-        </div>
-        <div class="research-frame research-frame--portrait">
-          <img draggable="false" src="{{ $image | relURL }}" alt="" width="320" height="320" />
-        </div>
-        <div class="research-frame research-frame--scatter">
-          {{- range seq 1 28 -}}<span></span>{{- end -}}
-        </div>
-        <div class="research-frame research-frame--frontier">
-          <svg viewBox="0 0 240 120" focusable="false">
-            <path d="M18 98 C62 82 93 54 123 39 C159 21 196 26 226 47" />
-            <circle cx="158" cy="30" r="4" />
-          </svg>
-        </div>
-        <div class="research-frame research-frame--mesh"></div>
-        <div class="research-frame research-frame--surface"></div>
-      </div>
-    </div>
+    </aside>
   </section>
 </div>
