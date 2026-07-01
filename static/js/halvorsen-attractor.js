@@ -18,7 +18,9 @@
         y: 0,
         vx: 0,
         vy: 0,
+        minX: 0,
         maxX: 0,
+        minY: 0,
         maxY: 0
     };
 
@@ -53,20 +55,39 @@
     }
 
     function resize() {
+        canvas.style.setProperty("--attractor-drift-x", "0px");
+        canvas.style.setProperty("--attractor-drift-y", "0px");
+
         var rect = canvas.getBoundingClientRect();
         var width = Math.max(1, Math.floor(rect.width));
         var height = Math.max(1, Math.floor(rect.height));
         var hero = canvas.closest(".research-hero");
         var heroRect = hero ? hero.getBoundingClientRect() : null;
+        var compact = window.innerWidth <= 480;
+        var visibleX = heroRect ? Math.min(width, heroRect.width) * (compact ? 0.72 : 0.58) : width;
+        var visibleY = heroRect ? Math.min(height, heroRect.height) * (compact ? 0.82 : 0.54) : height;
 
         dpr = Math.min(window.devicePixelRatio || 1, 2);
         canvas.width = Math.floor(width * dpr);
         canvas.height = Math.floor(height * dpr);
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        drift.maxX = heroRect ? Math.max(0, heroRect.width * 0.42) : 0;
-        drift.maxY = heroRect ? Math.max(0, heroRect.height * 0.16) : 0;
-        drift.x = Math.max(-drift.maxX, Math.min(drift.maxX, drift.x));
-        drift.y = Math.max(-drift.maxY, Math.min(drift.maxY, drift.y));
+
+        if (heroRect) {
+            drift.minX = heroRect.left + visibleX - rect.right;
+            drift.maxX = heroRect.right - visibleX - rect.left;
+            drift.minY = heroRect.top + visibleY - rect.bottom;
+            drift.maxY = heroRect.bottom - visibleY - rect.top;
+        } else {
+            drift.minX = 0;
+            drift.maxX = 0;
+            drift.minY = 0;
+            drift.maxY = 0;
+        }
+
+        drift.x = Math.max(drift.minX, Math.min(drift.maxX, drift.x));
+        drift.y = Math.max(drift.minY, Math.min(drift.maxY, drift.y));
+        canvas.style.setProperty("--attractor-drift-x", drift.x.toFixed(2) + "px");
+        canvas.style.setProperty("--attractor-drift-y", drift.y.toFixed(2) + "px");
         draw(0);
     }
 
@@ -148,13 +169,13 @@
         drift.x += drift.vx;
         drift.y += drift.vy;
 
-        if (Math.abs(drift.x) > drift.maxX) {
-            drift.x = Math.max(-drift.maxX, Math.min(drift.maxX, drift.x));
+        if (drift.x < drift.minX || drift.x > drift.maxX) {
+            drift.x = Math.max(drift.minX, Math.min(drift.maxX, drift.x));
             drift.vx *= -0.42;
         }
 
-        if (Math.abs(drift.y) > drift.maxY) {
-            drift.y = Math.max(-drift.maxY, Math.min(drift.maxY, drift.y));
+        if (drift.y < drift.minY || drift.y > drift.maxY) {
+            drift.y = Math.max(drift.minY, Math.min(drift.maxY, drift.y));
             drift.vy *= -0.42;
         }
 
