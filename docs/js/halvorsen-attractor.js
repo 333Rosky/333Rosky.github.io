@@ -16,13 +16,36 @@
     var drift = {
         x: 0,
         y: 0,
-        vx: 0,
-        vy: 0,
         minX: 0,
         maxX: 0,
         minY: 0,
-        maxY: 0
+        maxY: 0,
+        seedX: Math.random() * 1000,
+        seedY: Math.random() * 1000
     };
+
+    function clamp(value, min, max) {
+        return Math.max(min, Math.min(max, value));
+    }
+
+    function hash(value) {
+        var x = Math.sin(value * 127.1) * 43758.5453;
+        return x - Math.floor(x);
+    }
+
+    function smootherStep(value) {
+        return value * value * value * (value * (value * 6 - 15) + 10);
+    }
+
+    function smoothNoise(time, seed) {
+        var base = Math.floor(time);
+        var fraction = time - base;
+        var a = hash(base + seed);
+        var b = hash(base + 1 + seed);
+        var eased = smootherStep(fraction);
+
+        return (a + (b - a) * eased) * 2 - 1;
+    }
 
     function buildAttractor() {
         var a = 1.4;
@@ -84,8 +107,8 @@
             drift.maxY = 0;
         }
 
-        drift.x = Math.max(drift.minX, Math.min(drift.maxX, drift.x));
-        drift.y = Math.max(drift.minY, Math.min(drift.maxY, drift.y));
+        drift.x = clamp(drift.x, drift.minX, drift.maxX);
+        drift.y = clamp(drift.y, drift.minY, drift.maxY);
         canvas.style.setProperty("--attractor-drift-x", drift.x.toFixed(2) + "px");
         canvas.style.setProperty("--attractor-drift-y", drift.y.toFixed(2) + "px");
         draw(0);
@@ -161,23 +184,23 @@
             return;
         }
 
-        var noiseX = Math.random() - 0.5 + Math.sin(timestamp * 0.00023) * 0.16;
-        var noiseY = Math.random() - 0.5 + Math.cos(timestamp * 0.00019) * 0.16;
+        var centerX = (drift.minX + drift.maxX) * 0.5;
+        var centerY = (drift.minY + drift.maxY) * 0.5;
+        var rangeX = Math.max(0, (drift.maxX - drift.minX) * 0.5);
+        var rangeY = Math.max(0, (drift.maxY - drift.minY) * 0.5);
+        var motionPace = clamp(180 / Math.max(rangeX, rangeY, 1), 0.42, 1);
+        var seconds = timestamp * 0.001 * motionPace;
+        var brownianX = Math.sin(seconds * 0.43 + drift.seedX) * 0.36
+            + Math.sin(seconds * 0.91 + drift.seedY * 0.71) * 0.22
+            + Math.cos(seconds * 1.37 + drift.seedX * 0.19 + Math.sin(seconds * 0.31 + drift.seedY)) * 0.18
+            + smoothNoise(seconds * 0.65, drift.seedX + 23) * 0.16;
+        var brownianY = Math.cos(seconds * 0.39 + drift.seedY) * 0.34
+            + Math.sin(seconds * 0.83 + drift.seedX * 0.61) * 0.24
+            + Math.cos(seconds * 1.21 + drift.seedY * 0.17 + Math.cos(seconds * 0.27 + drift.seedX)) * 0.18
+            + smoothNoise(seconds * 0.58, drift.seedY + 41) * 0.16;
 
-        drift.vx = (drift.vx + noiseX * 0.035) * 0.992;
-        drift.vy = (drift.vy + noiseY * 0.026) * 0.992;
-        drift.x += drift.vx;
-        drift.y += drift.vy;
-
-        if (drift.x < drift.minX || drift.x > drift.maxX) {
-            drift.x = Math.max(drift.minX, Math.min(drift.maxX, drift.x));
-            drift.vx *= -0.42;
-        }
-
-        if (drift.y < drift.minY || drift.y > drift.maxY) {
-            drift.y = Math.max(drift.minY, Math.min(drift.maxY, drift.y));
-            drift.vy *= -0.42;
-        }
+        drift.x = clamp(centerX + clamp(brownianX, -0.92, 0.92) * rangeX, drift.minX, drift.maxX);
+        drift.y = clamp(centerY + clamp(brownianY, -0.92, 0.92) * rangeY, drift.minY, drift.maxY);
 
         canvas.style.setProperty("--attractor-drift-x", drift.x.toFixed(2) + "px");
         canvas.style.setProperty("--attractor-drift-y", drift.y.toFixed(2) + "px");
