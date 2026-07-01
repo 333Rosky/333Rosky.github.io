@@ -13,6 +13,14 @@
     var dpr = Math.min(window.devicePixelRatio || 1, 2);
     var points = [];
     var radius = 1;
+    var drift = {
+        x: 0,
+        y: 0,
+        vx: 0,
+        vy: 0,
+        maxX: 0,
+        maxY: 0
+    };
 
     function buildAttractor() {
         var a = 1.4;
@@ -48,11 +56,17 @@
         var rect = canvas.getBoundingClientRect();
         var width = Math.max(1, Math.floor(rect.width));
         var height = Math.max(1, Math.floor(rect.height));
+        var hero = canvas.closest(".research-hero");
+        var heroRect = hero ? hero.getBoundingClientRect() : null;
 
         dpr = Math.min(window.devicePixelRatio || 1, 2);
         canvas.width = Math.floor(width * dpr);
         canvas.height = Math.floor(height * dpr);
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        drift.maxX = heroRect ? Math.max(0, heroRect.width * 0.42) : 0;
+        drift.maxY = heroRect ? Math.max(0, heroRect.height * 0.16) : 0;
+        drift.x = Math.max(-drift.maxX, Math.min(drift.maxX, drift.x));
+        drift.y = Math.max(-drift.maxY, Math.min(drift.maxY, drift.y));
         draw(0);
     }
 
@@ -121,7 +135,35 @@
         ctx.stroke();
     }
 
+    function moveAttractor(timestamp) {
+        if (reduceMotion) {
+            return;
+        }
+
+        var noiseX = Math.random() - 0.5 + Math.sin(timestamp * 0.00023) * 0.16;
+        var noiseY = Math.random() - 0.5 + Math.cos(timestamp * 0.00019) * 0.16;
+
+        drift.vx = (drift.vx + noiseX * 0.035) * 0.992;
+        drift.vy = (drift.vy + noiseY * 0.026) * 0.992;
+        drift.x += drift.vx;
+        drift.y += drift.vy;
+
+        if (Math.abs(drift.x) > drift.maxX) {
+            drift.x = Math.max(-drift.maxX, Math.min(drift.maxX, drift.x));
+            drift.vx *= -0.42;
+        }
+
+        if (Math.abs(drift.y) > drift.maxY) {
+            drift.y = Math.max(-drift.maxY, Math.min(drift.maxY, drift.y));
+            drift.vy *= -0.42;
+        }
+
+        canvas.style.setProperty("--attractor-drift-x", drift.x.toFixed(2) + "px");
+        canvas.style.setProperty("--attractor-drift-y", drift.y.toFixed(2) + "px");
+    }
+
     function animate(timestamp) {
+        moveAttractor(timestamp || 0);
         draw(timestamp || 0);
 
         if (!reduceMotion) {

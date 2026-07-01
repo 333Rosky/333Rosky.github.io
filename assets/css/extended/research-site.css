@@ -106,9 +106,10 @@ a {
     height: min(58vw, 620px);
     min-width: 440px;
     min-height: 440px;
-    transform: translateY(-50%);
+    transform: translate3d(var(--attractor-drift-x, 0), var(--attractor-drift-y, 0), 0) translateY(-50%);
     opacity: 0.72;
     pointer-events: none;
+    will-change: transform;
 }
 
 .research-hero__copy {

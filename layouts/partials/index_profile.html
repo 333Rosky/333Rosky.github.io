@@ -16,13 +16,13 @@
       <p class="research-role">{{ $role | markdownify }}</p>
 
       <div class="research-actions" aria-label="Primary links">
-        <a class="research-button research-button--primary" href="{{ $experienceURL | relURL }}">
+        <a class="research-button" href="{{ $experienceURL | relURL }}">
           Experience
         </a>
         <a class="research-button" href="{{ $projectsURL | relURL }}">
           Projects
         </a>
-        <a class="research-button" href="{{ $cvURL | relURL }}">
+        <a class="research-button research-button--primary" href="{{ $cvURL | relURL }}">
           CV
         </a>
       </div>
