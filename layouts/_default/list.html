@@ -6,7 +6,9 @@
 
 {{- if not .IsHome | and .Title }}
 <header class="page-header">
-  {{- partial "breadcrumbs.html" . }}
+  {{- with .Params.sectionNumber }}
+  <span class="page-header__index" aria-hidden="true">{{ . }}</span>
+  {{- end }}
   <h1>{{ .Title }}</h1>
   {{- with .Description }}
   <div class="post-description">{{ . | markdownify }}</div>

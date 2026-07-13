@@ -8,34 +8,58 @@
 {{- $role := $profile.subtitle | default "Quantitative Researcher" -}}
 
 <div class="profile research-home">
-  <section class="research-hero" aria-labelledby="research-home-title">
+  <section class="research-stage" aria-labelledby="research-home-title">
     <canvas class="attractor-canvas" data-halvorsen-attractor aria-hidden="true"></canvas>
 
-    <div class="research-hero__copy">
-      <h1 id="research-home-title">{{ $name | markdownify }}</h1>
-      <p class="research-role">{{ $role | markdownify }}</p>
+    <div class="research-stage__body">
+      <div class="research-identity">
+        <h1 id="research-home-title">
+          {{- range (split $name " ") }}
+          <span>{{ . }}</span>
+          {{- end }}
+        </h1>
+        <p class="research-role">{{ $role | markdownify }}</p>
 
-      <div class="research-actions" aria-label="Primary links">
-        <a class="research-button research-button--primary" href="{{ $cvURL | relURL }}">
-          CV
-        </a>
-        <a class="research-button" href="{{ $experienceURL | relURL }}">
-          Experience
-        </a>
-        <a class="research-button" href="{{ $projectsURL | relURL }}">
-          Projects
-        </a>
+        <div class="research-social" aria-label="Public profiles">
+          {{- partial "social_icons.html" (dict "align" "") -}}
+        </div>
       </div>
 
-      <div class="research-social" aria-label="Public profiles">
-        {{- partial "social_icons.html" (dict "align" "") -}}
-      </div>
+      <aside class="research-profile" aria-label="Profile and Halvorsen system">
+        <div class="research-portrait">
+          <img draggable="false" src="{{ $image | relURL }}" alt="{{ $imageTitle }}" title="{{ $imageTitle }}" width="320" height="320" />
+        </div>
+
+        <div class="halvorsen-system">
+          <div class="halvorsen-system__heading">
+            <span>Halvorsen system</span>
+            <span>a = 1.4</span>
+          </div>
+          <code aria-label="Halvorsen differential equations">
+            <span>dx/dt = -ax - 4y - 4z - y<sup>2</sup></span>
+            <span>dy/dt = -ay - 4z - 4x - z<sup>2</sup></span>
+            <span>dz/dt = -az - 4x - 4y - x<sup>2</sup></span>
+          </code>
+        </div>
+      </aside>
     </div>
 
-    <aside class="research-portrait" aria-label="Research profile">
-      <div class="research-photo-shell">
-        <img draggable="false" src="{{ $image | relURL }}" alt="{{ $imageTitle }}" title="{{ $imageTitle }}" width="320" height="320" />
-      </div>
-    </aside>
+    <nav class="research-directory" aria-label="Portfolio sections">
+      <a class="research-directory__item research-directory__item--primary" href="{{ $cvURL | relURL }}">
+        <span class="research-directory__index" aria-hidden="true">01</span>
+        <span class="research-directory__label">CV</span>
+        <span class="research-directory__arrow" aria-hidden="true">&#8599;</span>
+      </a>
+      <a class="research-directory__item" href="{{ $experienceURL | relURL }}">
+        <span class="research-directory__index" aria-hidden="true">02</span>
+        <span class="research-directory__label">Experience</span>
+        <span class="research-directory__arrow" aria-hidden="true">&#8594;</span>
+      </a>
+      <a class="research-directory__item" href="{{ $projectsURL | relURL }}">
+        <span class="research-directory__index" aria-hidden="true">03</span>
+        <span class="research-directory__label">Projects</span>
+        <span class="research-directory__arrow" aria-hidden="true">&#8594;</span>
+      </a>
+    </nav>
   </section>
 </div>

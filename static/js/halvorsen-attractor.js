@@ -5,9 +5,9 @@
     }
 
     var ctx = canvas.getContext("2d", { alpha: true });
-    var hero = canvas.closest(".research-hero");
-    var copy = hero ? hero.querySelector(".research-hero__copy") : null;
-    var portrait = hero ? hero.querySelector(".research-portrait") : null;
+    var hero = canvas.closest(".research-stage");
+    var copy = hero ? hero.querySelector(".research-identity") : null;
+    var profile = hero ? hero.querySelector(".research-profile") : null;
     if (!ctx || !hero) {
         return;
     }
@@ -139,7 +139,7 @@
         layout.maxY = Math.max(layout.minY, layout.height - visibleMargin);
         layout.obstacles = [
             measureObstacle(copy, layout.width <= 640 ? 12 : 24),
-            measureObstacle(portrait, 16)
+            measureObstacle(profile, 16)
         ].filter(Boolean);
 
         if (layout.width <= 640 && layout.obstacles[0]) {

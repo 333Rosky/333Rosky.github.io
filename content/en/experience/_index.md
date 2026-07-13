@@ -1,9 +1,11 @@
 ---
 title: "Experience"
+sectionNumber: "02"
 ---
 
 <section class="research-index" aria-label="Professional experience">
   <article class="research-entry">
+    <span class="research-entry__number" aria-hidden="true">01</span>
     <div class="research-entry__meta">
       <span>Jul 2025 — Apr 2026</span>
       <span>Paris, France</span>
@@ -20,6 +22,7 @@ title: "Experience"
   </article>
 
   <article class="research-entry">
+    <span class="research-entry__number" aria-hidden="true">02</span>
     <div class="research-entry__meta">
       <span>Jan 2025 — Jul 2025</span>
       <span>Paris, France</span>
@@ -37,6 +40,7 @@ title: "Experience"
   </article>
 
   <article class="research-entry">
+    <span class="research-entry__number" aria-hidden="true">03</span>
     <div class="research-entry__meta">
       <span>Jul 2024 — Dec 2024</span>
       <span>Luxembourg</span>
