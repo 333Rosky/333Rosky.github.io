@@ -61,6 +61,8 @@ params:
       url: "https://github.com/333Rosky"
     - name: linkedin
       url: "https://www.linkedin.com/in/romain-bastiani-118072173/"
+    - name: email
+      url: "mailto:romain.bastiani03@gmail.com"
 
 permalinks:
   posts: "/posts/:slug/"
