@@ -93,17 +93,18 @@ button:focus-visible {
     align-items: center;
     position: relative;
     isolation: isolate;
-    overflow: hidden;
+    overflow: visible;
     min-height: calc(100svh - 121px);
     padding: 64px 0;
 }
 
 .attractor-canvas {
-    position: absolute;
-    inset: 0;
+    position: fixed;
+    top: 61px;
+    left: 0;
     z-index: 0;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: calc(100svh - 121px);
     opacity: 0.82;
     pointer-events: none;
 }
@@ -488,6 +489,8 @@ button:focus-visible {
     }
 
     .attractor-canvas {
+        top: 55px;
+        height: calc(100svh - 115px);
         opacity: 0.62;
     }
 
