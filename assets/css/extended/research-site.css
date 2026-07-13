@@ -294,6 +294,7 @@ button:focus-visible {
     gap: 8px;
     align-items: baseline;
     color: inherit;
+    box-shadow: none;
     text-decoration: none;
 }
 

@@ -24,6 +24,7 @@
 </div>
 {{- end }}
 
+{{- if not (.Param "hideChildPages") }}
 {{- $pages := union .RegularPages .Sections }}
 {{- if .IsHome }}
   {{- $pages = where site.RegularPages "Type" "in" site.Params.mainSections }}
@@ -66,6 +67,7 @@
     {{- end }}
   </nav>
 </footer>
+{{- end }}
 {{- end }}
 
 {{- end }}

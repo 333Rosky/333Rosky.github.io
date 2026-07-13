@@ -1,6 +1,7 @@
 ---
 title: "Projects"
 layout: "list"
+hideChildPages: true
 ---
 
 <section class="research-index" aria-label="Selected quantitative projects">
@@ -25,18 +26,23 @@ layout: "list"
     </div>
   </article>
 
-  <article class="research-entry">
+  <article class="research-entry research-entry--repository">
     <div class="research-entry__meta">
       <time datetime="2025-09">Sep 2025</time>
-      <span>Python · NumPy · Polars · SciPy</span>
+      <span>Python · NumPy · SciPy</span>
     </div>
     <div class="research-entry__body">
       <p class="research-entry__eyebrow">Market Making</p>
-      <h2>Guéant–Lehalle–Fernandez-Tapia Model</h2>
-      <p>Implementation of the closed-form optimal quoting strategy under inventory constraints from the GLFT framework.</p>
+      <h2>
+        <a href="https://github.com/333Rosky/glft-market-making-lab" target="_blank" rel="noreferrer">
+          Guéant–Lehalle–Fernandez-Tapia Model
+          <span class="external-mark" aria-hidden="true">↗</span>
+        </a>
+      </h2>
+      <p>Research lab separating the exact finite-horizon GLFT benchmark from causal execution replay and empirical fill-hazard modeling.</p>
       <ul>
-        <li>Poisson fills and inventory dynamics</li>
-        <li>Maker fees, latency, and stochastic slippage</li>
+        <li>Latency, partial fills, queue-ahead, fees, markouts, and inverse-contract accounting</li>
+        <li>Leakage-safe monthly walk-forward calibration with out-of-sample diagnostics</li>
       </ul>
     </div>
   </article>
