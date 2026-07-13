@@ -6,8 +6,6 @@
 
     var ctx = canvas.getContext("2d", { alpha: true });
     var hero = canvas.closest(".research-hero");
-    var copy = hero ? hero.querySelector(".research-hero__copy") : null;
-    var portrait = hero ? hero.querySelector(".research-portrait") : null;
     if (!ctx || !hero) {
         return;
     }
@@ -24,8 +22,7 @@
         minX: 0,
         maxX: 0,
         minY: 0,
-        maxY: 0,
-        protectedAreas: []
+        maxY: 0
     };
     var motion = {
         x: 0,
@@ -88,6 +85,12 @@
         layout.maxX = Math.max(layout.minX, layout.width - visibleMargin);
         layout.minY = visibleMargin;
         layout.maxY = Math.max(layout.minY, layout.height - visibleMargin);
+        if (layout.width <= 640) {
+            layout.minY = Math.min(
+                layout.maxY,
+                Math.max(layout.minY, layout.height * 0.56)
+            );
+        }
 
         if (!motion.initialized) {
             motion.x = layout.width * (layout.width <= 640 ? 0.72 : 0.62);
@@ -105,20 +108,6 @@
         canvas.width = Math.floor(layout.width * dpr);
         canvas.height = Math.floor(layout.height * dpr);
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        layout.protectedAreas = [
-            measureProtectedArea(copy, window.innerWidth <= 640 ? 12 : 20),
-            measureProtectedArea(portrait, 10)
-        ].filter(Boolean);
-        if (layout.width <= 640 && layout.protectedAreas[0]) {
-            layout.minY = Math.min(
-                layout.maxY,
-                Math.max(
-                    layout.minY,
-                    layout.protectedAreas[0].y + layout.protectedAreas[0].height + visibleMargin * 0.18
-                )
-            );
-            motion.y = clamp(motion.y, layout.minY, layout.maxY);
-        }
         draw(0);
     }
 
@@ -134,31 +123,6 @@
         };
     }
 
-    function measureProtectedArea(element, padding) {
-        if (!element || window.getComputedStyle(element).display === "none") {
-            return null;
-        }
-
-        var canvasRect = canvas.getBoundingClientRect();
-        var elementRect = element.getBoundingClientRect();
-        return {
-            x: elementRect.left - canvasRect.left - padding,
-            y: elementRect.top - canvasRect.top - padding,
-            width: elementRect.width + padding * 2,
-            height: elementRect.height + padding * 2
-        };
-    }
-
-    function eraseProtectedArea(area) {
-        ctx.save();
-        ctx.globalCompositeOperation = "destination-out";
-        ctx.fillStyle = "rgba(0, 0, 0, 0.96)";
-        ctx.shadowColor = "rgba(0, 0, 0, 0.9)";
-        ctx.shadowBlur = 26;
-        ctx.fillRect(area.x, area.y, area.width, area.height);
-        ctx.restore();
-    }
-
     function draw(timestamp) {
         ctx.clearRect(0, 0, layout.width, layout.height);
         if (!points.length) {
@@ -171,7 +135,7 @@
         ctx.lineCap = "round";
         ctx.lineJoin = "round";
         ctx.lineWidth = 1;
-        ctx.strokeStyle = "rgba(245, 245, 245, 0.18)";
+        ctx.strokeStyle = "rgba(245, 245, 245, 0.22)";
         ctx.beginPath();
 
         for (var i = 0; i < points.length; i += 2) {
@@ -190,7 +154,7 @@
         var start = reduceMotion ? Math.floor(limit * 0.62) : Math.floor((timestamp * 0.05) % limit);
 
         ctx.lineWidth = 1.25;
-        ctx.strokeStyle = "rgba(245, 245, 245, 0.58)";
+        ctx.strokeStyle = "rgba(245, 245, 245, 0.68)";
         ctx.beginPath();
 
         for (var j = 0; j < span; j += 2) {
@@ -203,7 +167,6 @@
         }
 
         ctx.stroke();
-        layout.protectedAreas.forEach(eraseProtectedArea);
     }
 
     function updateMotion(timestamp) {
