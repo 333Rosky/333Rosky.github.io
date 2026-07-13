@@ -1,12 +1,10 @@
 ---
 title: "Projects"
 layout: "list"
-sectionNumber: "03"
 ---
 
 <section class="research-index" aria-label="Selected quantitative projects">
   <article class="research-entry">
-    <span class="research-entry__number" aria-hidden="true">01</span>
     <div class="research-entry__meta">
       <time datetime="2026-06">Jun 2026</time>
       <span>Python · Machine Learning</span>
@@ -23,7 +21,6 @@ sectionNumber: "03"
   </article>
 
   <article class="research-entry">
-    <span class="research-entry__number" aria-hidden="true">02</span>
     <div class="research-entry__meta">
       <time datetime="2025-09">Sep 2025</time>
       <span>Python · NumPy · Polars · SciPy</span>
@@ -40,7 +37,6 @@ sectionNumber: "03"
   </article>
 
   <article class="research-entry">
-    <span class="research-entry__number" aria-hidden="true">03</span>
     <div class="research-entry__meta">
       <time datetime="2024-01">Jan 2024</time>
       <span>Python · NumPy · SciPy</span>
@@ -57,7 +53,6 @@ sectionNumber: "03"
   </article>
 
   <article class="research-entry research-entry--repository">
-    <span class="research-entry__number" aria-hidden="true">04</span>
     <div class="research-entry__meta">
       <time datetime="2024-06">Jun 2024</time>
       <span>Python · Monte Carlo</span>
