@@ -26,7 +26,7 @@ hideChildPages: true
     </div>
   </article>
 
-  <article class="research-entry research-entry--repository">
+  <article class="research-entry">
     <div class="research-entry__meta">
       <time datetime="2025-09">Sep 2025</time>
       <span>Python · NumPy · SciPy</span>
@@ -34,9 +34,9 @@ hideChildPages: true
     <div class="research-entry__body">
       <p class="research-entry__eyebrow">Market Making</p>
       <h2>
-        <a href="https://github.com/333Rosky/glft-market-making-lab" target="_blank" rel="noreferrer">
+        <a href="/projects/glft-market-making-lab/">
           Guéant–Lehalle–Fernandez-Tapia Model
-          <span class="external-mark" aria-hidden="true">↗</span>
+          <span class="entry-arrow" aria-hidden="true">&rarr;</span>
         </a>
       </h2>
       <p>Research lab separating the exact finite-horizon GLFT benchmark from causal execution replay and empirical fill-hazard modeling.</p>
