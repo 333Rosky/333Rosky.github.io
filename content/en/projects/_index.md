@@ -11,7 +11,12 @@ layout: "list"
     </div>
     <div class="research-entry__body">
       <p class="research-entry__eyebrow">ENS / QRT Data Challenge</p>
-      <h2>Asset Allocation Forecasting</h2>
+      <h2>
+        <a href="/projects/qrt-data-challenge/">
+          Asset Allocation Forecasting
+          <span class="entry-arrow" aria-hidden="true">&rarr;</span>
+        </a>
+      </h2>
       <p>Forecasting portfolio movements from time-series and tabular data in an ENS-hosted challenge set up by QRT.</p>
       <ul>
         <li>0.52 public test score</li>

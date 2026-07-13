@@ -1,0 +1,15 @@
+{{- define "main" }}
+<article class="qrt-study">
+  <header class="page-header qrt-study__header">
+    {{- partial "breadcrumbs.html" . }}
+    <h1>{{ .Title }}</h1>
+    {{- with .Description }}
+    <p>{{ . }}</p>
+    {{- end }}
+  </header>
+
+  <div class="qrt-study__content">
+    {{- .Content }}
+  </div>
+</article>
+{{- end }}
