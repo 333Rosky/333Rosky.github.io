@@ -44,10 +44,8 @@
             {{- $menu_item_url := .URL }}
             {{- $page_url := $currentPage.RelPermalink }}
             <li>
-                <a href="{{ .URL | relURL }}" title="{{ .Title }}">
-                    <span {{- if eq $menu_item_url $page_url }} class="active" {{- end }}>
-                        {{- .Name -}}
-                    </span>
+                <a href="{{ .URL | relURL }}" title="{{ .Title }}"{{ if eq $menu_item_url $page_url }} aria-current="page"{{ end }}>
+                    <span>{{- .Name -}}</span>
                 </a>
             </li>
             {{- end }}

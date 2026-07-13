@@ -5,46 +5,39 @@
     }
 
     var ctx = canvas.getContext("2d", { alpha: true });
-    if (!ctx) {
+    var hero = canvas.closest(".research-hero");
+    var copy = hero ? hero.querySelector(".research-hero__copy") : null;
+    var portrait = hero ? hero.querySelector(".research-portrait") : null;
+    if (!ctx || !hero) {
         return;
     }
 
-    var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    var reduceMotion = motionQuery.matches;
     var points = [];
     var radius = 1;
-    var drift = {
-        x: 0,
-        y: 0,
+    var dpr = 1;
+    var layout = {
+        width: 1,
+        height: 1,
+        visualSize: 320,
         minX: 0,
         maxX: 0,
         minY: 0,
         maxY: 0,
-        seedX: Math.random() * 1000,
-        seedY: Math.random() * 1000
+        protectedAreas: []
+    };
+    var motion = {
+        x: 0,
+        y: 0,
+        vx: 18,
+        vy: -11,
+        initialized: false,
+        lastTimestamp: 0
     };
 
     function clamp(value, min, max) {
         return Math.max(min, Math.min(max, value));
-    }
-
-    function hash(value) {
-        var x = Math.sin(value * 127.1) * 43758.5453;
-        return x - Math.floor(x);
-    }
-
-    function smootherStep(value) {
-        return value * value * value * (value * (value * 6 - 15) + 10);
-    }
-
-    function smoothNoise(time, seed) {
-        var base = Math.floor(time);
-        var fraction = time - base;
-        var a = hash(base + seed);
-        var b = hash(base + 1 + seed);
-        var eased = smootherStep(fraction);
-
-        return (a + (b - a) * eased) * 2 - 1;
     }
 
     function buildAttractor() {
@@ -78,69 +71,102 @@
     }
 
     function resize() {
-        canvas.style.setProperty("--attractor-drift-x", "0px");
-        canvas.style.setProperty("--attractor-drift-y", "0px");
-
         var rect = canvas.getBoundingClientRect();
-        var width = Math.max(1, Math.floor(rect.width));
-        var height = Math.max(1, Math.floor(rect.height));
-        var hero = canvas.closest(".research-hero");
-        var heroRect = hero ? hero.getBoundingClientRect() : null;
-        var compact = window.innerWidth <= 480;
-        var visibleX = heroRect ? Math.min(width, heroRect.width) * (compact ? 0.72 : 0.58) : width;
-        var visibleY = heroRect ? Math.min(height, heroRect.height) * (compact ? 0.82 : 0.54) : height;
+        var previousWidth = layout.width;
+        var previousHeight = layout.height;
 
-        dpr = Math.min(window.devicePixelRatio || 1, 2);
-        canvas.width = Math.floor(width * dpr);
-        canvas.height = Math.floor(height * dpr);
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        layout.width = Math.max(1, Math.floor(rect.width));
+        layout.height = Math.max(1, Math.floor(rect.height));
+        layout.visualSize = clamp(
+            Math.min(layout.width, layout.height) * (layout.width <= 640 ? 0.58 : 0.68),
+            layout.width <= 640 ? 230 : 300,
+            layout.width <= 640 ? 330 : 540
+        );
 
-        if (heroRect) {
-            drift.minX = heroRect.left + visibleX - rect.right;
-            drift.maxX = heroRect.right - visibleX - rect.left;
-            drift.minY = heroRect.top + visibleY - rect.bottom;
-            drift.maxY = heroRect.bottom - visibleY - rect.top;
+        var visibleMargin = layout.visualSize * 0.28;
+        layout.minX = visibleMargin;
+        layout.maxX = Math.max(layout.minX, layout.width - visibleMargin);
+        layout.minY = visibleMargin;
+        layout.maxY = Math.max(layout.minY, layout.height - visibleMargin);
+
+        if (!motion.initialized) {
+            motion.x = layout.width * (layout.width <= 640 ? 0.72 : 0.62);
+            motion.y = layout.height * 0.48;
+            motion.initialized = true;
         } else {
-            drift.minX = 0;
-            drift.maxX = 0;
-            drift.minY = 0;
-            drift.maxY = 0;
+            motion.x *= layout.width / Math.max(previousWidth, 1);
+            motion.y *= layout.height / Math.max(previousHeight, 1);
         }
 
-        drift.x = clamp(drift.x, drift.minX, drift.maxX);
-        drift.y = clamp(drift.y, drift.minY, drift.maxY);
-        canvas.style.setProperty("--attractor-drift-x", drift.x.toFixed(2) + "px");
-        canvas.style.setProperty("--attractor-drift-y", drift.y.toFixed(2) + "px");
+        motion.x = clamp(motion.x, layout.minX, layout.maxX);
+        motion.y = clamp(motion.y, layout.minY, layout.maxY);
+
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        canvas.width = Math.floor(layout.width * dpr);
+        canvas.height = Math.floor(layout.height * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        layout.protectedAreas = [
+            measureProtectedArea(copy, window.innerWidth <= 640 ? 12 : 20),
+            measureProtectedArea(portrait, 10)
+        ].filter(Boolean);
+        if (layout.width <= 640 && layout.protectedAreas[0]) {
+            layout.minY = Math.min(
+                layout.maxY,
+                Math.max(
+                    layout.minY,
+                    layout.protectedAreas[0].y + layout.protectedAreas[0].height + visibleMargin * 0.18
+                )
+            );
+            motion.y = clamp(motion.y, layout.minY, layout.maxY);
+        }
         draw(0);
     }
 
-    function project(point, angle, scale, centerX, centerY) {
+    function project(point, angle, scale) {
         var cos = Math.cos(angle);
         var sin = Math.sin(angle);
         var x = point.x * cos - point.z * sin;
         var z = point.x * sin + point.z * cos;
 
         return {
-            x: centerX + x * scale,
-            y: centerY + (point.y * 0.72 + z * 0.22) * scale
+            x: motion.x + x * scale,
+            y: motion.y + (point.y * 0.72 + z * 0.22) * scale
         };
     }
 
+    function measureProtectedArea(element, padding) {
+        if (!element || window.getComputedStyle(element).display === "none") {
+            return null;
+        }
+
+        var canvasRect = canvas.getBoundingClientRect();
+        var elementRect = element.getBoundingClientRect();
+        return {
+            x: elementRect.left - canvasRect.left - padding,
+            y: elementRect.top - canvasRect.top - padding,
+            width: elementRect.width + padding * 2,
+            height: elementRect.height + padding * 2
+        };
+    }
+
+    function eraseProtectedArea(area) {
+        ctx.save();
+        ctx.globalCompositeOperation = "destination-out";
+        ctx.fillStyle = "rgba(0, 0, 0, 0.96)";
+        ctx.shadowColor = "rgba(0, 0, 0, 0.9)";
+        ctx.shadowBlur = 26;
+        ctx.fillRect(area.x, area.y, area.width, area.height);
+        ctx.restore();
+    }
+
     function draw(timestamp) {
-        var rect = canvas.getBoundingClientRect();
-        var width = rect.width;
-        var height = rect.height;
-
-        ctx.clearRect(0, 0, width, height);
-
+        ctx.clearRect(0, 0, layout.width, layout.height);
         if (!points.length) {
             return;
         }
 
         var angle = reduceMotion ? 0.65 : timestamp * 0.00008;
-        var scale = Math.min(width, height) * 0.43 / radius;
-        var centerX = width * 0.5;
-        var centerY = height * 0.52;
+        var scale = layout.visualSize * 0.43 / radius;
 
         ctx.lineCap = "round";
         ctx.lineJoin = "round";
@@ -149,7 +175,7 @@
         ctx.beginPath();
 
         for (var i = 0; i < points.length; i += 2) {
-            var point = project(points[i], angle, scale, centerX, centerY);
+            var point = project(points[i], angle, scale);
             if (i === 0) {
                 ctx.moveTo(point.x, point.y);
             } else {
@@ -168,7 +194,7 @@
         ctx.beginPath();
 
         for (var j = 0; j < span; j += 2) {
-            var trailPoint = project(points[start + j], angle, scale, centerX, centerY);
+            var trailPoint = project(points[start + j], angle, scale);
             if (j === 0) {
                 ctx.moveTo(trailPoint.x, trailPoint.y);
             } else {
@@ -177,40 +203,82 @@
         }
 
         ctx.stroke();
+        layout.protectedAreas.forEach(eraseProtectedArea);
     }
 
-    function moveAttractor(timestamp) {
+    function updateMotion(timestamp) {
         if (reduceMotion) {
+            motion.x = layout.width * (layout.width <= 640 ? 0.76 : 0.62);
+            motion.y = clamp(
+                layout.height * (layout.width <= 640 ? 0.62 : 0.48),
+                layout.minY,
+                layout.maxY
+            );
             return;
         }
 
-        var centerX = (drift.minX + drift.maxX) * 0.5;
-        var centerY = (drift.minY + drift.maxY) * 0.5;
-        var rangeX = Math.max(0, (drift.maxX - drift.minX) * 0.5);
-        var rangeY = Math.max(0, (drift.maxY - drift.minY) * 0.5);
-        var motionPace = clamp(180 / Math.max(rangeX, rangeY, 1), 0.42, 1);
-        var seconds = timestamp * 0.001 * motionPace;
-        var brownianX = Math.sin(seconds * 0.43 + drift.seedX) * 0.36
-            + Math.sin(seconds * 0.91 + drift.seedY * 0.71) * 0.22
-            + Math.cos(seconds * 1.37 + drift.seedX * 0.19 + Math.sin(seconds * 0.31 + drift.seedY)) * 0.18
-            + smoothNoise(seconds * 0.65, drift.seedX + 23) * 0.16;
-        var brownianY = Math.cos(seconds * 0.39 + drift.seedY) * 0.34
-            + Math.sin(seconds * 0.83 + drift.seedX * 0.61) * 0.24
-            + Math.cos(seconds * 1.21 + drift.seedY * 0.17 + Math.cos(seconds * 0.27 + drift.seedX)) * 0.18
-            + smoothNoise(seconds * 0.58, drift.seedY + 41) * 0.16;
+        var elapsed = motion.lastTimestamp ? (timestamp - motion.lastTimestamp) / 1000 : 0;
+        var dt = clamp(elapsed, 0, 0.04);
+        motion.lastTimestamp = timestamp;
+        if (!dt) {
+            return;
+        }
 
-        drift.x = clamp(centerX + clamp(brownianX, -0.92, 0.92) * rangeX, drift.minX, drift.maxX);
-        drift.y = clamp(centerY + clamp(brownianY, -0.92, 0.92) * rangeY, drift.minY, drift.maxY);
+        var range = Math.max(layout.maxX - layout.minX, layout.maxY - layout.minY, 1);
+        var pace = clamp(range / 560, 0.55, 1.25);
+        var noise = 34 * pace;
+        var friction = Math.exp(-0.72 * dt);
+        var centerPull = 0.012;
+        var centerX = (layout.minX + layout.maxX) * 0.5;
+        var centerY = (layout.minY + layout.maxY) * 0.5;
 
-        canvas.style.setProperty("--attractor-drift-x", drift.x.toFixed(2) + "px");
-        canvas.style.setProperty("--attractor-drift-y", drift.y.toFixed(2) + "px");
+        motion.vx += (Math.random() - 0.5) * noise * Math.sqrt(dt);
+        motion.vy += (Math.random() - 0.5) * noise * Math.sqrt(dt);
+        motion.vx += (centerX - motion.x) * centerPull * dt;
+        motion.vy += (centerY - motion.y) * centerPull * dt;
+        motion.vx *= friction;
+        motion.vy *= friction;
+
+        var maxSpeed = 28 * pace;
+        var speed = Math.hypot(motion.vx, motion.vy);
+        if (speed > maxSpeed) {
+            motion.vx = motion.vx / speed * maxSpeed;
+            motion.vy = motion.vy / speed * maxSpeed;
+        }
+
+        motion.x += motion.vx * dt;
+        motion.y += motion.vy * dt;
+
+        if (motion.x <= layout.minX || motion.x >= layout.maxX) {
+            motion.x = clamp(motion.x, layout.minX, layout.maxX);
+            motion.vx *= -0.82;
+        }
+        if (motion.y <= layout.minY || motion.y >= layout.maxY) {
+            motion.y = clamp(motion.y, layout.minY, layout.maxY);
+            motion.vy *= -0.82;
+        }
     }
 
     function animate(timestamp) {
-        moveAttractor(timestamp || 0);
-        draw(timestamp || 0);
+        if (!document.hidden) {
+            updateMotion(timestamp || 0);
+            draw(timestamp || 0);
+        } else {
+            motion.lastTimestamp = 0;
+        }
 
         if (!reduceMotion) {
+            window.requestAnimationFrame(animate);
+        }
+    }
+
+    function handleMotionPreference(event) {
+        reduceMotion = event.matches;
+        motion.lastTimestamp = 0;
+        if (reduceMotion) {
+            updateMotion(0);
+            draw(0);
+        } else {
             window.requestAnimationFrame(animate);
         }
     }
@@ -218,5 +286,6 @@
     buildAttractor();
     resize();
     window.addEventListener("resize", resize);
+    motionQuery.addEventListener("change", handleMotionPreference);
     window.requestAnimationFrame(animate);
 }());
