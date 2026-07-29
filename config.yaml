@@ -56,6 +56,14 @@ params:
     imageUrl: "/Linkedin PP.jpg"
     imageTitle: "Profile photo"
 
+  currentChallenge:
+    enabled: true
+    status: "Ongoing challenge"
+    title: "ENS / QRT Data Challenge"
+    rankLabel: "Current rank"
+    rank: "8 / 1,426"
+    url: "/projects/qrt-data-challenge/"
+
   socialIcons:
     - name: github
       url: "https://github.com/333Rosky"

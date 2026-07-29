@@ -6,6 +6,7 @@
 {{- $projectsURL := "/projects/" -}}
 {{- $cvURL := "/Romain Bastiani Resume.pdf" -}}
 {{- $role := $profile.subtitle | default "Quantitative Researcher" -}}
+{{- $challenge := site.Params.currentChallenge -}}
 
 <div class="profile research-home">
   <section class="research-hero" aria-labelledby="research-home-title">
@@ -37,5 +38,20 @@
         <img draggable="false" src="{{ $image | relURL }}" alt="{{ $imageTitle }}" title="{{ $imageTitle }}" width="320" height="320" />
       </div>
     </aside>
+
+    {{- if $challenge.enabled }}
+    <a class="research-challenge" href="{{ $challenge.url | relURL }}" aria-label="{{ $challenge.title }}, {{ $challenge.rankLabel }} {{ $challenge.rank }}">
+      <span class="research-challenge__status">
+        <span class="research-challenge__indicator" aria-hidden="true"></span>
+        {{ $challenge.status }}
+      </span>
+      <strong class="research-challenge__title">{{ $challenge.title }}</strong>
+      <span class="research-challenge__rank">
+        <span>{{ $challenge.rankLabel }}</span>
+        <strong>{{ $challenge.rank }}</strong>
+      </span>
+      <span class="research-challenge__arrow" aria-hidden="true">&rarr;</span>
+    </a>
+    {{- end }}
   </section>
 </div>
