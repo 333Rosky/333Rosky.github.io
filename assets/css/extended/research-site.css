@@ -512,29 +512,6 @@ button:focus-visible {
     margin: 13px 0 0;
 }
 
-.qrt-study__points {
-    display: grid;
-    gap: 9px;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-}
-
-.qrt-study__points li {
-    position: relative;
-    padding-left: 16px;
-    color: var(--content);
-    font-size: 15px;
-    line-height: 1.6;
-}
-
-.qrt-study__points li::before {
-    content: "-";
-    position: absolute;
-    left: 0;
-    color: var(--secondary);
-}
-
 .qrt-study__figures {
     display: grid;
     gap: 42px;
@@ -838,10 +815,6 @@ button:focus-visible {
 
     .qrt-study__figures {
         gap: 34px;
-    }
-
-    .qrt-study__points li {
-        font-size: 14px;
     }
 
     .qrt-study__disclosure {
