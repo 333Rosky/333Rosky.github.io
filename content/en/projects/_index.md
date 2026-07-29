@@ -18,10 +18,10 @@ hideChildPages: true
           <span class="entry-arrow" aria-hidden="true">&rarr;</span>
         </a>
       </h2>
-      <p>Forecasting portfolio movements from time-series and tabular data in an ENS-hosted challenge set up by QRT.</p>
+      <p>Structure-aware directional forecasting from anonymized asset-allocation panel data in an ENS-hosted challenge set up by QRT.</p>
       <ul>
-        <li>0.52 public test score</li>
-        <li>Top 10% on the private test leaderboard</li>
+        <li>0.5472 public score</li>
+        <li>Ranked 8th out of 1,426 participants</li>
       </ul>
     </div>
   </article>
