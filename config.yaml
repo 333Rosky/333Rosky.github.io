@@ -60,8 +60,8 @@ params:
     enabled: true
     status: "Ongoing challenge"
     title: "ENS / QRT Data Challenge"
-    rankLabel: "Current rank"
-    rank: "8 / 1,426"
+    rankLabel: "Public rank"
+    rank: "6"
     url: "/projects/qrt-data-challenge/"
 
   socialIcons:
