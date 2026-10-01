@@ -2,7 +2,7 @@
 title: "ENS / QRT Data Challenge"
 description: "Current public result from an ongoing asset-allocation forecasting competition."
 date: 2026-06-01
-lastmod: 2026-08-05
+lastmod: 2026-10-01
 layout: "qrt-study"
 url: "/projects/qrt-data-challenge/"
 ---
@@ -19,11 +19,11 @@ url: "/projects/qrt-data-challenge/"
 <section class="qrt-study__metrics" aria-label="Current competition standing">
   <div class="qrt-study__metric">
     <p>Public rank</p>
-    <strong>6 <span>/ 1,486</span></strong>
+    <strong>13</strong>
   </div>
   <div class="qrt-study__metric">
     <p>Public score</p>
-    <strong>0.555</strong>
+    <strong>0.7567</strong>
   </div>
 </section>
 

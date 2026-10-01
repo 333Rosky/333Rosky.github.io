@@ -21,8 +21,8 @@ hideChildPages: true
       </h2>
       <p>Directional forecasting in an ENS-hosted asset-allocation challenge set up by QRT.</p>
       <ul>
-        <li>0.555 public score</li>
-        <li>Ranked 6th out of 1,486 participants</li>
+        <li>0.7567 public score</li>
+        <li>Ranked 13th on the public leaderboard</li>
       </ul>
     </div>
   </article>

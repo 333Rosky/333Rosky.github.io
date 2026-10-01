@@ -5,7 +5,7 @@ title: "Experience"
 <section class="research-index" aria-label="Professional experience">
   <article class="research-entry">
     <div class="research-entry__meta">
-      <span>Jul 2025 — Apr 2026</span>
+      <span>Jul 2025 — Present</span>
       <span>Paris, France</span>
     </div>
     <div class="research-entry__body">
