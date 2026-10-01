@@ -29,7 +29,7 @@ params:
   keywords: ["Quantitative Researcher", "Python", "Finance"]
   author: "Romain Bastiani"
   DateFormat: "2006-01-02"
-  defaultTheme: dark
+  defaultTheme: light
   disableThemeToggle: true
   ShowBreadCrumbs: true
   ShowReadingTime: false
@@ -46,13 +46,14 @@ params:
     favicon32x32: "/favicon-32x32.png"
     apple_touch_icon: "/apple-touch-icon.png"
     safari_pinned_tab: "/safari-pinned-tab.svg"
-    theme_color: "#050505"
-    msapplication_TileColor: "#050505"
+    theme_color: "#f4f7fc"
+    msapplication_TileColor: "#244ace"
 
   profileMode:
     enabled: true
     title: "Romain Bastiani"
     subtitle: "Quantitative Researcher"
+    description: "I work on macro signals and systematic commodities, with independent research in market microstructure."
     imageUrl: "/Linkedin PP.jpg"
     imageTitle: "Profile photo"
 
@@ -62,6 +63,7 @@ params:
     title: "ENS / QRT Data Challenge"
     rankLabel: "Public rank"
     rank: "13"
+    score: "0.7567"
     url: "/projects/qrt-data-challenge/"
 
   socialIcons:

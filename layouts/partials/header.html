@@ -1,54 +1,13 @@
 <header class="header">
-    <nav class="nav">
-        <div class="logo">
-            {{- $site := .Site }}
-            {{- $label_text := ($site.Params.label.text | default $site.Title) }}
-            {{- if $site.Title }}
-            <a href="{{ $site.Home.Permalink }}" accesskey="h" title="{{ $label_text }} (Alt + H)">
-                {{- if $site.Params.label.icon }}
-                {{- $img := resources.Get $site.Params.label.icon }}
-                {{- if $img }}
-                    {{- $processableFormats := (slice "jpg" "jpeg" "png" "tif" "bmp" "gif") -}}
-                    {{- if hugo.IsExtended -}}
-                        {{- $processableFormats = $processableFormats | append "webp" -}}
-                    {{- end -}}
-                    {{- $prod := (hugo.IsProduction | or (eq $site.Params.env "production")) }}
-                    {{- if and (in $processableFormats $img.MediaType.SubType) (eq $prod true)}}
-                        {{- if $site.Params.label.iconHeight }}
-                            {{- $img = $img.Resize (printf "x%d" $site.Params.label.iconHeight) }}
-                        {{ else }}
-                            {{- $img = $img.Resize "x30" }}
-                        {{- end }}
-                    {{- end }}
-                    <img src="{{ $img.Permalink }}" alt="" aria-label="logo"
-                        height="{{- $site.Params.label.iconHeight | default "30" -}}">
-                {{- else }}
-                <img src="{{- $site.Params.label.icon | relURL -}}" alt="" aria-label="logo"
-                    height="{{- $site.Params.label.iconHeight | default "30" -}}">
-                {{- end -}}
-                {{- else if hasPrefix $site.Params.label.iconSVG "<svg" }}
-                    {{ $site.Params.label.iconSVG | safeHTML }}
-                {{- end -}}
-                {{- $label_text -}}
-            </a>
-            {{- end }}
-        </div>
-        {{- $currentPage := . }}
-        {{- $menuItems := slice
-            (dict "Name" "Experience" "Title" "Experience" "URL" "/experience/")
-            (dict "Name" "Projects" "Title" "Projects" "URL" "/projects/")
-            (dict "Name" "CV" "Title" "CV" "URL" "/Romain Bastiani Resume.pdf")
-        }}
-        <ul id="menu">
-            {{- range $menuItems }}
-            {{- $menu_item_url := .URL }}
-            {{- $page_url := $currentPage.RelPermalink }}
-            <li>
-                <a href="{{ .URL | relURL }}" title="{{ .Title }}"{{ if eq $menu_item_url $page_url }} aria-current="page"{{ end }}>
-                    <span>{{- .Name -}}</span>
-                </a>
-            </li>
-            {{- end }}
-        </ul>
-    </nav>
+  <nav class="nav" aria-label="Main navigation">
+    <a class="site-brand" href="{{ site.Home.RelPermalink }}" aria-label="Romain Bastiani, home">
+      <img src="{{ "favicon.svg" | relURL }}" width="36" height="36" alt="" aria-hidden="true">
+      <span>Romain Bastiani</span>
+    </a>
+    <ul id="menu">
+      <li><a href="{{ "experience/" | relURL }}"{{ if hasPrefix .RelPermalink "/experience/" }} aria-current="page"{{ end }}>Experience</a></li>
+      <li><a href="{{ "projects/" | relURL }}"{{ if hasPrefix .RelPermalink "/projects/" }} aria-current="page"{{ end }}>Projects</a></li>
+      <li><a class="nav-cv" href="{{ partialCached "cv-url.html" . "cv" }}">CV <span class="nav-cv__format">PDF</span></a></li>
+    </ul>
+  </nav>
 </header>

@@ -1,57 +1,61 @@
 {{- $profile := site.Params.profileMode -}}
 {{- $name := $profile.title | default site.Title -}}
-{{- $image := $profile.imageUrl | default "/Linkedin PP.jpg" -}}
-{{- $imageTitle := $profile.imageTitle | default "Profile image" -}}
-{{- $experienceURL := "/experience/" -}}
-{{- $projectsURL := "/projects/" -}}
-{{- $cvURL := "/Romain Bastiani Resume.pdf" -}}
-{{- $role := $profile.subtitle | default "Quantitative Researcher" -}}
 {{- $challenge := site.Params.currentChallenge -}}
-
 <div class="profile research-home">
   <section class="research-hero" aria-labelledby="research-home-title">
-    <canvas class="attractor-canvas" data-halvorsen-attractor aria-hidden="true"></canvas>
-
     <div class="research-hero__copy">
-      <h1 id="research-home-title">{{ $name | markdownify }}</h1>
-      <p class="research-role">{{ $role | markdownify }}</p>
-
-      <div class="research-actions" aria-label="Primary links">
-        <a class="research-button research-button--primary" href="{{ $cvURL | relURL }}">
-          CV
-        </a>
-        <a class="research-button" href="{{ $experienceURL | relURL }}">
-          Experience
-        </a>
-        <a class="research-button" href="{{ $projectsURL | relURL }}">
-          Projects
-        </a>
+      <h1 id="research-home-title" aria-label="{{ $name }}">{{ range split $name " " }}<span>{{ . }}</span>{{ end }}</h1>
+      <p class="research-role">{{ $profile.subtitle }}</p>
+      <p class="research-intro">{{ $profile.description }}</p>
+      {{ if $challenge.enabled }}<a class="research-proof" href="{{ $challenge.url | relURL }}">ENS / QRT: public rank <strong>{{ $challenge.rank }}</strong>, score <strong>{{ $challenge.score }}</strong>.</a>{{ end }}
+      <div class="research-actions">
+        <a class="research-button research-button--primary" href="{{ partialCached "cv-url.html" . "cv" }}">View CV <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 15 15 5M5 5h10v10"/></svg></a>
+        <a class="research-text-link" href="{{ "projects/" | relURL }}">Explore projects</a>
       </div>
-
-      <div class="research-social" aria-label="Public profiles">
-        {{- partial "social_icons.html" (dict "align" "") -}}
+      <div class="research-person">
+        <div class="research-portrait"><img src="{{ $profile.imageUrl | relURL }}" width="68" height="68" alt="Romain Bastiani" decoding="async"></div>
+        <div class="research-person__links">
+          <a href="mailto:romain.bastiani03@gmail.com">Let’s talk research</a>
+          <div class="research-social">{{ partial "social_icons.html" (dict "align" "") }}</div>
+        </div>
       </div>
     </div>
-
-    <aside class="research-portrait" aria-label="Research profile">
-      <div class="research-photo-shell">
-        <img draggable="false" src="{{ $image | relURL }}" alt="{{ $imageTitle }}" title="{{ $imageTitle }}" width="320" height="320" />
+    <figure class="research-plot">
+      <div class="plot-stage">
+        <canvas class="attractor-canvas" data-halvorsen-attractor aria-hidden="true"></canvas>
+        <span class="plot-hint">Move the pointer to explore</span>
       </div>
-    </aside>
-
-    {{- if $challenge.enabled }}
-    <a class="research-challenge" href="{{ $challenge.url | relURL }}" aria-label="{{ $challenge.title }}, {{ $challenge.rankLabel }} {{ $challenge.rank }}">
-      <span class="research-challenge__status">
-        <span class="research-challenge__indicator" aria-hidden="true"></span>
-        {{ $challenge.status }}
-      </span>
-      <strong class="research-challenge__title">{{ $challenge.title }}</strong>
-      <span class="research-challenge__rank">
-        <span>{{ $challenge.rankLabel }}</span>
-        <strong>{{ $challenge.rank }}</strong>
-      </span>
-      <span class="research-challenge__arrow" aria-hidden="true">&rarr;</span>
-    </a>
-    {{- end }}
+      <figcaption class="plot-caption">
+        <span>Halvorsen attractor</span>
+        <button class="plot-playback" type="button" data-animation-toggle aria-pressed="false">
+          <svg class="plot-pause-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="M5.5 3.5v9m5-9v9"/></svg>
+          <svg class="plot-play-icon" viewBox="0 0 16 16" aria-hidden="true"><path d="m5 3 7 5-7 5Z"/></svg>
+          <span data-playback-text>Pause motion</span>
+        </button>
+      </figcaption>
+    </figure>
+  </section>
+  <section class="home-research" aria-labelledby="home-research-title">
+    <div class="section-heading"><h2 id="home-research-title">Selected research</h2><a href="{{ "projects/" | relURL }}">All projects</a></div>
+    <div class="research-features">
+      {{ if $challenge.enabled }}
+      <a class="research-feature research-feature--challenge research-challenge" href="{{ $challenge.url | relURL }}">
+        <div class="feature-copy">
+          <span class="feature-status">{{ $challenge.status }}</span>
+          <h3>{{ $challenge.title }}</h3>
+          <p>Forecasting the direction of daily asset-allocation returns.</p>
+          <dl class="feature-metrics">
+            <div><dt>Public rank</dt><dd>{{ $challenge.rank }}</dd></div>
+            <div><dt>Public score</dt><dd>{{ $challenge.score }}</dd></div>
+          </dl>
+          <span class="feature-action">View competition result</span>
+        </div>
+      </a>
+      {{ end }}
+      <a class="research-feature research-feature--glft" href="{{ "projects/glft-market-making-lab/" | relURL }}">
+        <div class="feature-image"><img src="{{ "images/projects/glft/optimal-quote-distance.png" | relURL }}" alt="GLFT bid and ask quote distances as inventory changes." width="1600" height="900" loading="lazy" decoding="async"></div>
+        <div class="feature-copy"><h3>GLFT Market Making Lab</h3><p>Inventory-aware quotes and causal execution diagnostics.</p><span class="feature-action">Explore the research</span></div>
+      </a>
+    </div>
   </section>
 </div>
