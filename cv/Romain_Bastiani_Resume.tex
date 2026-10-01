@@ -2,8 +2,10 @@
 
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage[default]{lato}
-\usepackage{microtype}
+% Match Hugo Lemonnier's resume: Latin Modern Roman, 10pt body,
+% 12pt section headings, 17.28pt name and 9pt header details.
+\usepackage{lmodern}
+\usepackage[expansion=false]{microtype}
 \DisableLigatures{encoding = *, family = *}
 \usepackage{latexsym}
 \usepackage[empty]{fullpage}
@@ -40,14 +42,14 @@
 
 %---------- TITRES ----------
 \titleformat{\section}
-  {\bfseries\raggedright\normalsize}
+  {\bfseries\raggedright\large}
   {}{0em}{}
   [\vspace{2pt}\titlerule]
 
 \titlespacing*{\section}
   {0pt}
-  {8pt}
   {6pt}
+  {4pt}
 
 \pdfgentounicode=1
 
@@ -55,14 +57,14 @@
 % Custom commands
 
 \newcommand{\resumeItem}[1]{
-  \item\small{{#1 \vspace{-1pt}}}
+  \item\normalsize{{#1 \vspace{-1pt}}}
 }
 
 \newcommand{\resumeSubheading}[4]{
   \vspace{-1pt}\item
     \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
       \textbf{#1} & #2 \\[-2pt]
-      \textit{\small#3} & \textit{\small #4} \\
+      \textit{#3} & \textit{#4} \\
     \end{tabular*}\vspace{-1pt}
 }
 
@@ -70,7 +72,7 @@
   \vspace{-1pt}\item
     \begin{tabular*}{0.97\textwidth}[t]{l@{\extracolsep{\fill}}r}
       \textbf{#1} & #2 \\[-2pt]
-      \textit{\small#3} & \textit{\small #4} \\[-1pt]
+      \textit{#3} & \textit{#4} \\[-1pt]
       \multicolumn{2}{l}{\textit{\small #5}} \\
     \end{tabular*}\vspace{-1pt}
 }
@@ -78,26 +80,26 @@
 \newcommand{\resumeSubSubheading}[2]{
     \item
     \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
-      \textit{\small#1} & \textit{\small #2} \\
+      \textit{#1} & \textit{#2} \\
     \end{tabular*}\vspace{-1pt}
 }
 
 \newcommand{\resumeProjectHeading}[2]{
     \item
-    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
-      \small#1 & #2 \\
-    \end{tabular*}\vspace{-2pt}
+    \begin{tabularx}{0.97\textwidth}[t]{@{}>{\raggedright\arraybackslash}X@{\hspace{0.75em}}r@{}}
+      #1 & #2 \\
+    \end{tabularx}\vspace{-2pt}
 }
 
-\renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
+\renewcommand\labelitemii{\textbullet}
 
-\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.12in, label={}, itemsep=4pt]}
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.12in, label={}, itemsep=2pt]}
 \newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
 
-\newcommand{\resumeItemListStart}{\begin{itemize}[itemsep=5.5pt, parsep=0pt, topsep=2pt, partopsep=0pt, leftmargin=0.20in]}
+\newcommand{\resumeItemListStart}{\begin{itemize}[itemsep=2pt, parsep=0pt, topsep=2pt, partopsep=0pt, leftmargin=0.20in]}
 \newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-2pt}}
 
-\newcommand{\resumeProjectItemListStart}{\begin{itemize}[itemsep=5.5pt, parsep=0pt, topsep=2pt, partopsep=0pt, leftmargin=0.20in]}
+\newcommand{\resumeProjectItemListStart}{\begin{itemize}[itemsep=2pt, parsep=0pt, topsep=2pt, partopsep=0pt, leftmargin=0.20in]}
 \newcommand{\resumeProjectItemListEnd}{\end{itemize}\vspace{-2pt}}
 
 \renewcommand{\baselinestretch}{0.97}
@@ -108,11 +110,11 @@
 \begin{center}
     \vspace{-12pt}
     \textbf{\LARGE Romain Bastiani} \\ \vspace{3pt}
-    (+33) 617108406 $|$ \href{mailto:romain.bastiani03@gmail.com}{\underline{romain.bastiani03@gmail.com}} $|$
-    \href{https://www.linkedin.com/in/romain-bastiani-118072173/}{\underline{LinkedIn}} $|$
-    \href{https://github.com/333Rosky}{\underline{GitHub}} \\ \vspace{6pt}
-    \textbf{Actively seeking a full-time position as a Quantitative Researcher.}
-    \vspace{6pt}
+    {\small (+33) 617108406 \textbar{} \href{mailto:romain.bastiani03@gmail.com}{\underline{romain.bastiani03@gmail.com}} \textbar{}
+    \href{https://www.linkedin.com/in/romain-bastiani-118072173/}{\underline{LinkedIn}} \textbar{}
+    \href{https://github.com/333Rosky}{\underline{GitHub}}} \\ \vspace{4pt}
+    {\small\textbf{Actively seeking a full-time position as a Quantitative Researcher.}}
+    \vspace{4pt}
 \end{center}
 
 %-----------WORK EXPERIENCE----------
@@ -155,20 +157,20 @@
 \resumeSubHeadingListStart
 
 \resumeProjectHeading
-{\textbf{ENS / QRT Data Challenge - Asset Allocation Forecasting} $|$ \emph{Python, Machine Learning}}{Jun 2026 - Present}
+{\textbf{ENS / QRT Data Challenge - Asset Allocation Forecasting} \textbar{} \emph{Python, Machine Learning}}{Jun 2026 - Present}
 \resumeProjectItemListStart
 \resumeItem{\textbf{Currently ranked 6th out of 1,486 participants} on the public leaderboard, with a \textbf{0.555 public score}, in QRT's ENS-hosted Asset Allocation Performance Forecasting challenge.}
 \resumeProjectItemListEnd
 
 \resumeProjectHeading
-{\textbf{Gueant-Lehalle-Fernandez-Tapia (GLFT) Market Making Lab} $|$ \emph{Python, NumPy, pandas, SciPy}}{Sep 2025 - Present}
+{\textbf{Gueant-Lehalle-Fernandez-Tapia (GLFT) Market Making Lab} \mbox{\textbar{} \emph{Python, NumPy, pandas, SciPy}}}{Sep 2025 - Present}
 \resumeProjectItemListStart
 \resumeItem{Implemented and unit-tested exact finite-horizon GLFT quotes under inventory constraints, keeping the paper's Poisson benchmark separate from empirical execution modeling.}
 \resumeItem{Built a causal BTCUSD perpetual replay with latency, partial fills, approximate queue-ahead and inverse P\&L; evaluated a side-specific fill-hazard model with chronological out-of-sample diagnostics.}
 \resumeProjectItemListEnd
 
 \resumeProjectHeading
-{\textbf{Portfolio Optimization Strategy} $|$ \emph{Python, NumPy, SciPy, Matplotlib}}{Jan 2024}
+{\textbf{Portfolio Optimization Strategy} \textbar{} \emph{Python, NumPy, SciPy, Matplotlib}}{Jan 2024}
 \resumeProjectItemListStart
 \resumeItem{Constructed optimal portfolios using Mean-Variance Optimization via scipy.optimize to maximize the Sharpe Ratio.}
 \resumeItem{Simulated thousands of portfolios (Monte Carlo) to visualize the Efficient Frontier and the Capital Market Line (CML).}
@@ -182,7 +184,7 @@
 
 \resumeSubheading
 {Neoma Business School}{Rouen, France}
-{MSc Corporate Finance \& Investment Banking $|$ \textbf{GPA: 4.0/4.0}}{Oct 2023 - Dec 2024}
+{MSc Corporate Finance \& Investment Banking \textbar{} \textbf{GPA: 4.0/4.0}}{Oct 2023 - Dec 2024}
 \resumeItemListStart
 \resumeItem{Double degree with ESIGELEC.}
 \resumeItem{\textbf{Thesis: Stochastic Models and Real Options in Corporate Valuation} -- combined WRDS/Compustat cash flows, US Treasury rates and Monte Carlo simulation to compare deterministic and stochastic NPV and study expansion/abandonment real options.}
@@ -191,7 +193,7 @@
 
 \resumeSubheading
 {ESIGELEC}{Rouen, France}
-{MEng of Science, Applied Mathematics $|$ \textbf{Top 10\% of Class}}{Sep 2018 - Dec 2024}
+{MEng of Science, Applied Mathematics \textbar{} \textbf{Top 10\% of Class}}{Sep 2018 - Dec 2024}
 \resumeItemListStart
 \resumeItem{\textbf{Key Modules:} Advanced Probability, Machine Learning, Monte Carlo Simulation, Applied Statistics for Finance.}
 \resumeItemListEnd
@@ -201,7 +203,7 @@
 %-----------SKILLS----------
 \section{Skills \& Interests}
 \begin{itemize}[leftmargin=0.20in, label={}]
-\small{\item{
+\normalsize{\item{
 \textbf{Languages}: French (native), English (C1) \\
 \textbf{Programming}: Python (NumPy, pandas, scipy, scikit-learn, Polars), SQL \\
 \textbf{IT}: Microsoft Office, \LaTeX \\
