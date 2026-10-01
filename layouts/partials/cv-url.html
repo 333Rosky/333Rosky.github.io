@@ -1,2 +1,0 @@
-{{- $revision := substr (sha256 (readFile "static/Romain Bastiani Resume.pdf")) 0 12 -}}
-{{- return (printf "%s?v=%s" ("/Romain Bastiani Resume.pdf" | relURL) $revision) -}}

@@ -8,12 +8,6 @@
 
     var motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     var reduceMotion = motionQuery.matches;
-    var plot = canvas.closest(".research-plot") || hero;
-    var stage = canvas.closest(".plot-stage") || canvas;
-    var playbackButton = plot.querySelector("[data-animation-toggle]");
-    var userPaused = false;
-    var pointer = { x: 0, y: 0, targetX: 0, targetY: 0 };
-    var ink = "245, 245, 245";
     var visible = true;
     var frameId = null;
     var elapsedTime = 0;
@@ -122,7 +116,7 @@
 
     function measureObstacles() {
         var canvasRect = canvas.getBoundingClientRect();
-        var padding = window.innerWidth <= 640 ? 12 : 20;
+        var padding = layout.width <= 640 ? 12 : 20;
         layout.obstacles = obstacles.filter(function (element) {
             return window.getComputedStyle(element).display !== "none";
         }).map(function (element) {
@@ -170,9 +164,9 @@
                 largest = Math.max(largest, free);
             }
         }
-        var phone = window.innerWidth <= 640;
-        var desiredSize = clamp(Math.min(layout.width, layout.height) * 0.9, phone ? 230 : 320, phone ? 430 : 560);
-        layout.visualSize = Math.min(desiredSize, largest * 1.85);
+        var phone = layout.width <= 640;
+        var desiredSize = clamp(Math.min(layout.width, layout.height) * 0.58, phone ? 230 : 320, phone ? 330 : 560);
+        layout.visualSize = Math.min(desiredSize, largest * 1.7);
         layout.clearance = layout.visualSize * 0.48 + Math.min(10, largest * 0.08);
         layout.minX = layout.minY = layout.clearance;
         layout.maxX = Math.max(layout.minX, layout.width - layout.clearance);
@@ -201,7 +195,6 @@
         canvas.width = Math.round(layout.width * dpr);
         canvas.height = Math.round(layout.height * dpr);
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        ink = window.getComputedStyle(canvas).getPropertyValue("--attractor-rgb").trim() || "245, 245, 245";
         draw();
         syncPlayback();
     }
@@ -297,14 +290,14 @@
 
     function draw() {
         ctx.clearRect(0, 0, layout.width, layout.height);
-        var yaw = 0.65 + elapsedTime * 0.055 + pointer.x;
-        var pitch = -0.08 + Math.sin(elapsedTime * 0.071) * 0.22 + pointer.y;
+        var yaw = 0.65 + elapsedTime * 0.055;
+        var pitch = -0.08 + Math.sin(elapsedTime * 0.071) * 0.22;
         var roll = Math.sin(elapsedTime * 0.037 + 1.7) * 0.1;
         var cy = Math.cos(yaw), sy = Math.sin(yaw);
         var cp = Math.cos(pitch), sp = Math.sin(pitch);
         var cr = Math.cos(roll), sr = Math.sin(roll);
         var scale = layout.visualSize * 0.43;
-        var stride = window.innerWidth <= 640 ? 3 : 2;
+        var stride = layout.width <= 640 ? 3 : 2;
         var px = 0, py = 0;
 
         // Trigonometry is computed once per frame, not once per vertex.
@@ -323,20 +316,20 @@
         ctx.lineCap = "round";
         ctx.lineJoin = "round";
         ctx.lineWidth = 0.9;
-        ctx.strokeStyle = "rgba(" + ink + ", 0.22)";
+        ctx.strokeStyle = "rgba(245, 245, 245, 0.19)";
         ctx.beginPath();
         for (var i = 0; i < cloudSize; i += stride) {
             project(cloud, i);
             if (!i) { ctx.moveTo(px, py); } else { ctx.lineTo(px, py); }
         }
         ctx.stroke();
-        var alphas = [0.16, 0.32, 0.56, 0.9];
+        var alphas = [0.12, 0.25, 0.46, 0.72];
         for (var section = 0; section < alphas.length; section += 1) {
             var start = Math.max(0, Math.floor(section * trailSize / 4) - 2);
             var end = Math.min(trailSize, Math.ceil((section + 1) * trailSize / 4));
             ctx.beginPath();
             ctx.lineWidth = 1 + section * 0.1;
-            ctx.strokeStyle = "rgba(" + ink + ", " + alphas[section] + ")";
+            ctx.strokeStyle = "rgba(245, 245, 245, " + alphas[section] + ")";
             for (var j = start; j < end; j += 2) {
                 project(trail, (trailCursor + j) % trailSize);
                 if (j === start) { ctx.moveTo(px, py); } else { ctx.lineTo(px, py); }
@@ -347,7 +340,7 @@
             }
             ctx.stroke();
         }
-        ctx.fillStyle = "rgba(" + ink + ", 0.86)";
+        ctx.fillStyle = "rgba(245, 245, 245, 0.86)";
         ctx.beginPath();
         ctx.arc(px, py, 1.6, 0, Math.PI * 2);
         ctx.fill();
@@ -355,7 +348,7 @@
     }
 
     function shouldAnimate() {
-        return !reduceMotion && !userPaused && !document.hidden && visible && layout.visualSize > 8;
+        return !reduceMotion && !document.hidden && visible && layout.visualSize > 8;
     }
 
     function scheduleFrame() {
@@ -371,9 +364,6 @@
         lastTimestamp = timestamp;
         elapsedTime += dt;
         if (dt) { updateMotion(dt); updateTrail(dt); }
-        var response = 1 - Math.exp(-dt * 8);
-        pointer.x += (pointer.targetX - pointer.x) * response;
-        pointer.y += (pointer.targetY - pointer.y) * response;
         draw();
         scheduleFrame();
     }
@@ -383,12 +373,6 @@
             if (frameId !== null) { window.cancelAnimationFrame(frameId); frameId = null; }
             lastTimestamp = 0;
         } else { scheduleFrame(); }
-        plot.dataset.paused = String(userPaused || reduceMotion);
-        if (playbackButton) {
-            playbackButton.disabled = reduceMotion;
-            playbackButton.setAttribute("aria-pressed", String(userPaused || reduceMotion));
-            playbackButton.querySelector("[data-playback-text]").textContent = reduceMotion ? "Motion paused" : userPaused ? "Resume motion" : "Pause motion";
-        }
     }
 
     buildAttractor();
@@ -396,19 +380,6 @@
     window.addEventListener("resize", resize);
     window.addEventListener("scroll", measureObstacles, { passive: true });
     document.addEventListener("visibilitychange", syncPlayback);
-    if (playbackButton) {
-        playbackButton.addEventListener("click", function () {
-            userPaused = !userPaused;
-            syncPlayback();
-        });
-    }
-    stage.addEventListener("pointermove", function (event) {
-        if (event.pointerType !== "mouse" || userPaused || reduceMotion) { return; }
-        var rect = canvas.getBoundingClientRect();
-        pointer.targetX = clamp((event.clientX - rect.left) / rect.width - 0.5, -0.5, 0.5) * 0.7;
-        pointer.targetY = clamp((event.clientY - rect.top) / rect.height - 0.5, -0.5, 0.5) * 0.45;
-    });
-    stage.addEventListener("pointerleave", function () { pointer.targetX = pointer.targetY = 0; });
     var handlePreference = function (event) {
         reduceMotion = event.matches;
         syncPlayback();
@@ -418,14 +389,14 @@
     else { motionQuery.addListener(handlePreference); }
     if (window.ResizeObserver) {
         var resizeObserver = new ResizeObserver(resize);
-        obstacles.concat([stage]).forEach(function (element) { resizeObserver.observe(element); });
+        obstacles.forEach(function (element) { resizeObserver.observe(element); });
     }
     if (window.IntersectionObserver) {
         var intersectionObserver = new IntersectionObserver(function (entries) {
             visible = entries[0].isIntersecting;
             syncPlayback();
         });
-        intersectionObserver.observe(canvas);
+        intersectionObserver.observe(hero);
     }
     scheduleFrame();
 }());
