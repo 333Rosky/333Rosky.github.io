@@ -8,6 +8,10 @@
 
     var motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     var reduceMotion = motionQuery.matches;
+    var pauseButton = hero.querySelector("[data-attractor-pause]");
+    var resetButton = hero.querySelector("[data-attractor-reset]");
+    var userPaused = false;
+    var interaction = { yaw: 0, pitch: 0, targetYaw: 0, targetPitch: 0, hoverYaw: 0, hoverPitch: 0, targetHoverYaw: 0, targetHoverPitch: 0, dragging: false, pointerId: null, lastX: 0, lastY: 0 };
     var visible = true;
     var frameId = null;
     var elapsedTime = 0;
@@ -25,7 +29,8 @@
     var obstacles = [
         hero.querySelector(".research-hero__copy"),
         hero.querySelector(".research-portrait"),
-        hero.querySelector(".research-challenge")
+        hero.querySelector(".research-challenge"),
+        hero.querySelector(".attractor-controls")
     ].filter(Boolean);
     var regimes = [
         { theta: 0.34, sigma: 19, driftSpeed: 48, rho: 0.12, meanDuration: 12 },
@@ -290,8 +295,8 @@
 
     function draw() {
         ctx.clearRect(0, 0, layout.width, layout.height);
-        var yaw = 0.65 + elapsedTime * 0.055;
-        var pitch = -0.08 + Math.sin(elapsedTime * 0.071) * 0.22;
+        var yaw = 0.65 + elapsedTime * 0.055 + interaction.yaw + interaction.hoverYaw;
+        var pitch = -0.08 + Math.sin(elapsedTime * 0.071) * 0.22 + interaction.pitch + interaction.hoverPitch;
         var roll = Math.sin(elapsedTime * 0.037 + 1.7) * 0.1;
         var cy = Math.cos(yaw), sy = Math.sin(yaw);
         var cp = Math.cos(pitch), sp = Math.sin(pitch);
@@ -348,7 +353,7 @@
     }
 
     function shouldAnimate() {
-        return !reduceMotion && !document.hidden && visible && layout.visualSize > 8;
+        return !reduceMotion && !userPaused && !document.hidden && visible && layout.visualSize > 8;
     }
 
     function scheduleFrame() {
@@ -362,8 +367,15 @@
         if (!shouldAnimate()) { lastTimestamp = 0; return; }
         var dt = lastTimestamp ? clamp((timestamp - lastTimestamp) / 1000, 0, 0.04) : 0;
         lastTimestamp = timestamp;
-        elapsedTime += dt;
-        if (dt) { updateMotion(dt); updateTrail(dt); }
+        if (!interaction.dragging) {
+            elapsedTime += dt;
+            if (dt) { updateMotion(dt); updateTrail(dt); }
+        }
+        var response = 1 - Math.exp(-dt * 8);
+        interaction.yaw += (interaction.targetYaw - interaction.yaw) * response;
+        interaction.pitch += (interaction.targetPitch - interaction.pitch) * response;
+        interaction.hoverYaw += (interaction.targetHoverYaw - interaction.hoverYaw) * response;
+        interaction.hoverPitch += (interaction.targetHoverPitch - interaction.hoverPitch) * response;
         draw();
         scheduleFrame();
     }
@@ -373,6 +385,27 @@
             if (frameId !== null) { window.cancelAnimationFrame(frameId); frameId = null; }
             lastTimestamp = 0;
         } else { scheduleFrame(); }
+        if (pauseButton) {
+            pauseButton.disabled = reduceMotion;
+            pauseButton.setAttribute("aria-pressed", String(userPaused || reduceMotion));
+            pauseButton.textContent = reduceMotion ? "Motion off" : userPaused ? "Resume" : "Pause";
+        }
+    }
+
+    function resetView() {
+        interaction.yaw = interaction.pitch = interaction.targetYaw = interaction.targetPitch = 0;
+        interaction.hoverYaw = interaction.hoverPitch = interaction.targetHoverYaw = interaction.targetHoverPitch = 0;
+        draw();
+    }
+
+    function finishDrag() {
+        if (!interaction.dragging) { return; }
+        var pointerId = interaction.pointerId;
+        interaction.dragging = false;
+        interaction.pointerId = null;
+        canvas.dataset.dragging = "false";
+        if (canvas.hasPointerCapture(pointerId)) { canvas.releasePointerCapture(pointerId); }
+        syncPlayback();
     }
 
     buildAttractor();
@@ -380,6 +413,53 @@
     window.addEventListener("resize", resize);
     window.addEventListener("scroll", measureObstacles, { passive: true });
     document.addEventListener("visibilitychange", syncPlayback);
+    if (pauseButton) {
+        pauseButton.addEventListener("click", function () { userPaused = !userPaused; syncPlayback(); });
+    }
+    if (resetButton) { resetButton.addEventListener("click", resetView); }
+    canvas.addEventListener("pointerdown", function (event) {
+        if (!event.isPrimary || event.button !== 0 || interaction.dragging) { return; }
+        interaction.dragging = true;
+        interaction.pointerId = event.pointerId;
+        interaction.lastX = event.clientX;
+        interaction.lastY = event.clientY;
+        interaction.targetHoverYaw = interaction.targetHoverPitch = 0;
+        canvas.dataset.dragging = "true";
+        canvas.setPointerCapture(event.pointerId);
+        canvas.focus({ preventScroll: true });
+    });
+    canvas.addEventListener("pointermove", function (event) {
+        if (interaction.dragging && event.pointerId === interaction.pointerId) {
+            interaction.targetYaw += (event.clientX - interaction.lastX) * 0.006;
+            interaction.targetPitch = clamp(interaction.targetPitch + (event.clientY - interaction.lastY) * 0.006, -1.2, 1.2);
+            interaction.lastX = event.clientX; interaction.lastY = event.clientY;
+            if (userPaused || reduceMotion) {
+                interaction.yaw = interaction.targetYaw;
+                interaction.pitch = interaction.targetPitch;
+                draw();
+            }
+        } else if (event.pointerType === "mouse" && !reduceMotion && !userPaused) {
+            var rect = canvas.getBoundingClientRect();
+            interaction.targetHoverYaw = clamp((event.clientX - rect.left) / rect.width - 0.5, -0.5, 0.5) * 0.7;
+            interaction.targetHoverPitch = clamp((event.clientY - rect.top) / rect.height - 0.5, -0.5, 0.5) * 0.45;
+        }
+    });
+    canvas.addEventListener("pointerleave", function () { interaction.targetHoverYaw = interaction.targetHoverPitch = 0; });
+    canvas.addEventListener("pointerup", finishDrag);
+    canvas.addEventListener("pointercancel", finishDrag);
+    canvas.addEventListener("lostpointercapture", finishDrag);
+    window.addEventListener("blur", finishDrag);
+    canvas.addEventListener("keydown", function (event) {
+        if (event.key === " ") { event.preventDefault(); if (!reduceMotion) { userPaused = !userPaused; syncPlayback(); } return; }
+        if (event.key.toLowerCase() === "r") { event.preventDefault(); resetView(); return; }
+        var yawStep = event.key === "ArrowLeft" ? -0.08 : event.key === "ArrowRight" ? 0.08 : 0;
+        var pitchStep = event.key === "ArrowUp" ? -0.08 : event.key === "ArrowDown" ? 0.08 : 0;
+        if (!yawStep && !pitchStep) { return; }
+        event.preventDefault();
+        interaction.yaw = interaction.targetYaw += yawStep;
+        interaction.pitch = interaction.targetPitch = clamp(interaction.targetPitch + pitchStep, -1.2, 1.2);
+        draw();
+    });
     var handlePreference = function (event) {
         reduceMotion = event.matches;
         syncPlayback();

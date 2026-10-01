@@ -107,7 +107,41 @@ button:focus-visible {
     width: 100vw;
     height: calc(100svh - 121px);
     opacity: 0.82;
-    pointer-events: none;
+    pointer-events: auto;
+    cursor: grab;
+    touch-action: pan-y;
+}
+
+.attractor-canvas[data-dragging="true"] { cursor: grabbing; }
+.attractor-canvas:focus-visible { outline: 1px solid #777; outline-offset: -8px; }
+.attractor-controls {
+    position: absolute;
+    right: 0;
+    bottom: 150px;
+    z-index: 2;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    color: var(--secondary);
+    font-size: 12px;
+}
+.attractor-controls button {
+    min-height: 36px;
+    padding: 0 11px;
+    color: var(--secondary);
+    border: 1px solid var(--border);
+    background: var(--theme);
+    font: inherit;
+    cursor: pointer;
+}
+.attractor-controls button:disabled { opacity: .55; cursor: default; }
+@media (hover: hover) and (pointer: fine) {
+    .attractor-controls button:hover { color: var(--primary); border-color: #777; }
+}
+@media (max-width: 860px) { .attractor-controls { bottom: 138px; } }
+@media (max-width: 640px) {
+    .attractor-controls { position: fixed; bottom: 74px; right: 18px; gap: 10px; }
+    .attractor-controls__hint { display: none; }
 }
 
 .research-hero__copy {
