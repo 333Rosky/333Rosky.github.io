@@ -10,7 +10,8 @@
 
 <div class="profile research-home">
   <section class="research-hero" aria-labelledby="research-home-title">
-    <canvas class="attractor-canvas" data-halvorsen-attractor tabindex="0" role="img" aria-label="Interactive Halvorsen attractor. Drag to rotate, use arrow keys to turn the view, or Space to pause."></canvas>
+    <canvas class="attractor-canvas" data-halvorsen-attractor tabindex="0" role="img" aria-label="Interactive Halvorsen attractor. Drag and release to throw. Shift and drag to rotate. Arrow keys rotate; Shift and arrow keys move. Space pauses."></canvas>
+    <div class="attractor-grab-target" data-attractor-handle aria-hidden="true"></div>
 
     <div class="research-hero__copy">
       <h1 id="research-home-title">{{ $name | markdownify }}</h1>
@@ -40,7 +41,7 @@
     </aside>
 
     <div class="attractor-controls" role="group" aria-label="Halvorsen controls">
-      <span class="attractor-controls__hint">Drag to rotate</span>
+      <span class="attractor-controls__hint">Drag to throw · Shift to rotate</span>
       <button type="button" data-attractor-pause aria-pressed="false">Pause</button>
       <button type="button" data-attractor-reset>Reset view</button>
     </div>

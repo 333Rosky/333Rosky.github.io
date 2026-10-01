@@ -113,6 +113,15 @@ button:focus-visible {
 }
 
 .attractor-canvas[data-dragging="true"] { cursor: grabbing; }
+.attractor-grab-target {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 0;
+    cursor: grab;
+    touch-action: none;
+}
+.attractor-grab-target[data-dragging="true"] { cursor: grabbing; }
 .attractor-canvas:focus-visible { outline: 1px solid #777; outline-offset: -8px; }
 .attractor-controls {
     position: absolute;

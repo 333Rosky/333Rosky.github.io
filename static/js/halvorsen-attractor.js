@@ -11,7 +11,9 @@
     var pauseButton = hero.querySelector("[data-attractor-pause]");
     var resetButton = hero.querySelector("[data-attractor-reset]");
     var userPaused = false;
-    var interaction = { yaw: 0, pitch: 0, targetYaw: 0, targetPitch: 0, hoverYaw: 0, hoverPitch: 0, targetHoverYaw: 0, targetHoverPitch: 0, dragging: false, pointerId: null, lastX: 0, lastY: 0 };
+    var grabTarget = hero.querySelector("[data-attractor-handle]");
+    var inertia = { active: false, vx: 0, vy: 0 };
+    var interaction = { yaw: 0, pitch: 0, targetYaw: 0, targetPitch: 0, hoverYaw: 0, hoverPitch: 0, targetHoverYaw: 0, targetHoverPitch: 0, dragging: false, pointerId: null, captureTarget: null, mode: "move", samples: [], lastX: 0, lastY: 0 };
     var visible = true;
     var frameId = null;
     var elapsedTime = 0;
@@ -155,6 +157,7 @@
         var previousWidth = layout.width, previousHeight = layout.height;
         layout.width = Math.max(1, rect.width);
         layout.height = Math.max(1, rect.height);
+        layout.left = rect.left; layout.top = rect.top;
         measureObstacles();
 
         // Find room for the whole shape, including the challenge card on phones.
@@ -200,6 +203,9 @@
         canvas.width = Math.round(layout.width * dpr);
         canvas.height = Math.round(layout.height * dpr);
         ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        if (grabTarget) {
+            grabTarget.style.width = grabTarget.style.height = (layout.clearance * 2) + "px";
+        }
         draw();
         syncPlayback();
     }
@@ -249,7 +255,50 @@
         motion.vy += ny * force * dt;
     }
 
+    function updateInertia(dt) {
+        motion.x += inertia.vx * dt;
+        motion.y += inertia.vy * dt;
+        layout.obstacles.forEach(function (obstacle) {
+            var nearestX = clamp(motion.x, obstacle.left, obstacle.right);
+            var nearestY = clamp(motion.y, obstacle.top, obstacle.bottom);
+            var dx = motion.x - nearestX, dy = motion.y - nearestY;
+            var distance = Math.hypot(dx, dy);
+            if (distance >= layout.clearance) { return; }
+            if (distance < 0.001) {
+                var edges = [
+                    { distance: motion.x - obstacle.left, x: -1, y: 0, px: obstacle.left - layout.clearance, py: motion.y },
+                    { distance: obstacle.right - motion.x, x: 1, y: 0, px: obstacle.right + layout.clearance, py: motion.y },
+                    { distance: motion.y - obstacle.top, x: 0, y: -1, px: motion.x, py: obstacle.top - layout.clearance },
+                    { distance: obstacle.bottom - motion.y, x: 0, y: 1, px: motion.x, py: obstacle.bottom + layout.clearance }
+                ].sort(function (a, b) { return a.distance - b.distance; });
+                dx = edges[0].x; dy = edges[0].y; distance = 1;
+                motion.x = edges[0].px; motion.y = edges[0].py;
+            } else {
+                motion.x += dx / distance * (layout.clearance - distance);
+                motion.y += dy / distance * (layout.clearance - distance);
+            }
+            var nx = dx / distance, ny = dy / distance;
+            var incoming = inertia.vx * nx + inertia.vy * ny;
+            if (incoming < 0) { inertia.vx -= incoming * nx * 1.72; inertia.vy -= incoming * ny * 1.72; }
+        });
+        if (motion.x < layout.minX || motion.x > layout.maxX) {
+            motion.x = clamp(motion.x, layout.minX, layout.maxX);
+            inertia.vx = Math.abs(inertia.vx) * (motion.x === layout.minX ? 0.78 : -0.78);
+        }
+        if (motion.y < layout.minY || motion.y > layout.maxY) {
+            motion.y = clamp(motion.y, layout.minY, layout.maxY);
+            inertia.vy = Math.abs(inertia.vy) * (motion.y === layout.minY ? 0.78 : -0.78);
+        }
+        var friction = Math.exp(-dt * 1.45);
+        inertia.vx *= friction; inertia.vy *= friction;
+        if (Math.hypot(inertia.vx, inertia.vy) < 30) {
+            inertia.active = false;
+            motion.vx = inertia.vx; motion.vy = inertia.vy;
+        }
+    }
+
     function updateMotion(dt) {
+        if (inertia.active) { updateInertia(dt); return; }
         if (!motion.nextRegimeAt || elapsedTime >= motion.nextRegimeAt) { switchRegime(); }
         var regime = regimes[motion.regime];
         var pace = clamp(Math.sqrt(layout.width * layout.height) / 980, 0.72, 1.35);
@@ -294,6 +343,9 @@
     }
 
     function draw() {
+        if (grabTarget) {
+            grabTarget.style.transform = "translate(" + (layout.left + motion.x - layout.clearance) + "px, " + (layout.top + motion.y - layout.clearance) + "px)";
+        }
         ctx.clearRect(0, 0, layout.width, layout.height);
         var yaw = 0.65 + elapsedTime * 0.055 + interaction.yaw + interaction.hoverYaw;
         var pitch = -0.08 + Math.sin(elapsedTime * 0.071) * 0.22 + interaction.pitch + interaction.hoverPitch;
@@ -395,16 +447,38 @@
     function resetView() {
         interaction.yaw = interaction.pitch = interaction.targetYaw = interaction.targetPitch = 0;
         interaction.hoverYaw = interaction.hoverPitch = interaction.targetHoverYaw = interaction.targetHoverPitch = 0;
-        draw();
+        inertia.active = false;
+        motion.vx = 24; motion.vy = -14;
+        motion.initialized = false;
+        resize();
     }
 
-    function finishDrag() {
+    function rememberPointer(event) {
+        interaction.samples.push({ x: event.clientX, y: event.clientY, time: event.timeStamp });
+        while (interaction.samples.length > 2 && event.timeStamp - interaction.samples[0].time > 120) { interaction.samples.shift(); }
+    }
+
+    function finishDrag(event) {
         if (!interaction.dragging) { return; }
-        var pointerId = interaction.pointerId;
+        if (interaction.mode === "move" && event && event.type === "pointerup") {
+            rememberPointer(event);
+            var first = interaction.samples[0];
+            var last = interaction.samples[interaction.samples.length - 1];
+            var seconds = (last.time - first.time) / 1000;
+            if (seconds > 0.005) {
+                var vx = (last.x - first.x) / seconds, vy = (last.y - first.y) / seconds;
+                var speed = Math.hypot(vx, vy), maximum = 1400;
+                var gain = speed > maximum ? maximum / speed : 1;
+                inertia.vx = vx * gain; inertia.vy = vy * gain;
+                inertia.active = speed > 35;
+            }
+        }
+        var pointerId = interaction.pointerId, target = interaction.captureTarget;
         interaction.dragging = false;
-        interaction.pointerId = null;
+        interaction.pointerId = null; interaction.captureTarget = null;
         canvas.dataset.dragging = "false";
-        if (canvas.hasPointerCapture(pointerId)) { canvas.releasePointerCapture(pointerId); }
+        if (grabTarget) { grabTarget.dataset.dragging = "false"; }
+        if (target && target.hasPointerCapture(pointerId)) { target.releasePointerCapture(pointerId); }
         syncPlayback();
     }
 
@@ -417,37 +491,50 @@
         pauseButton.addEventListener("click", function () { userPaused = !userPaused; syncPlayback(); });
     }
     if (resetButton) { resetButton.addEventListener("click", resetView); }
-    canvas.addEventListener("pointerdown", function (event) {
-        if (!event.isPrimary || event.button !== 0 || interaction.dragging) { return; }
-        interaction.dragging = true;
-        interaction.pointerId = event.pointerId;
-        interaction.lastX = event.clientX;
-        interaction.lastY = event.clientY;
-        interaction.targetHoverYaw = interaction.targetHoverPitch = 0;
-        canvas.dataset.dragging = "true";
-        canvas.setPointerCapture(event.pointerId);
-        canvas.focus({ preventScroll: true });
-    });
-    canvas.addEventListener("pointermove", function (event) {
-        if (interaction.dragging && event.pointerId === interaction.pointerId) {
-            interaction.targetYaw += (event.clientX - interaction.lastX) * 0.006;
-            interaction.targetPitch = clamp(interaction.targetPitch + (event.clientY - interaction.lastY) * 0.006, -1.2, 1.2);
+    [canvas, grabTarget].filter(Boolean).forEach(function (target) {
+        target.addEventListener("pointerdown", function (event) {
+            if (!event.isPrimary || event.button !== 0 || interaction.dragging) { return; }
+            inertia.active = false;
+            interaction.dragging = true;
+            interaction.mode = event.shiftKey ? "rotate" : "move";
+            interaction.pointerId = event.pointerId; interaction.captureTarget = target;
             interaction.lastX = event.clientX; interaction.lastY = event.clientY;
-            if (userPaused || reduceMotion) {
-                interaction.yaw = interaction.targetYaw;
-                interaction.pitch = interaction.targetPitch;
-                draw();
+            interaction.samples = []; rememberPointer(event);
+            interaction.targetHoverYaw = interaction.targetHoverPitch = 0;
+            canvas.dataset.dragging = "true";
+            if (grabTarget) { grabTarget.dataset.dragging = "true"; }
+            target.setPointerCapture(event.pointerId);
+            canvas.focus({ preventScroll: true });
+        });
+        target.addEventListener("pointermove", function (event) {
+            if (interaction.dragging && event.pointerId === interaction.pointerId) {
+                var dx = event.clientX - interaction.lastX, dy = event.clientY - interaction.lastY;
+                if (interaction.mode === "move") {
+                    motion.x = clamp(motion.x + dx, layout.minX, layout.maxX);
+                    motion.y = clamp(motion.y + dy, layout.minY, layout.maxY);
+                    motion.vx = motion.vy = 0;
+                    rememberPointer(event);
+                } else {
+                    interaction.targetYaw += dx * 0.006;
+                    interaction.targetPitch = clamp(interaction.targetPitch + dy * 0.006, -1.2, 1.2);
+                }
+                interaction.lastX = event.clientX; interaction.lastY = event.clientY;
+                if (userPaused || reduceMotion) {
+                    interaction.yaw = interaction.targetYaw;
+                    interaction.pitch = interaction.targetPitch;
+                    draw();
+                }
+            } else if (event.pointerType === "mouse" && !reduceMotion && !userPaused) {
+                var rect = canvas.getBoundingClientRect();
+                interaction.targetHoverYaw = clamp((event.clientX - rect.left) / rect.width - 0.5, -0.5, 0.5) * 0.7;
+                interaction.targetHoverPitch = clamp((event.clientY - rect.top) / rect.height - 0.5, -0.5, 0.5) * 0.45;
             }
-        } else if (event.pointerType === "mouse" && !reduceMotion && !userPaused) {
-            var rect = canvas.getBoundingClientRect();
-            interaction.targetHoverYaw = clamp((event.clientX - rect.left) / rect.width - 0.5, -0.5, 0.5) * 0.7;
-            interaction.targetHoverPitch = clamp((event.clientY - rect.top) / rect.height - 0.5, -0.5, 0.5) * 0.45;
-        }
+        });
+        target.addEventListener("pointerleave", function () { interaction.targetHoverYaw = interaction.targetHoverPitch = 0; });
+        target.addEventListener("pointerup", finishDrag);
+        target.addEventListener("pointercancel", finishDrag);
+        target.addEventListener("lostpointercapture", finishDrag);
     });
-    canvas.addEventListener("pointerleave", function () { interaction.targetHoverYaw = interaction.targetHoverPitch = 0; });
-    canvas.addEventListener("pointerup", finishDrag);
-    canvas.addEventListener("pointercancel", finishDrag);
-    canvas.addEventListener("lostpointercapture", finishDrag);
     window.addEventListener("blur", finishDrag);
     canvas.addEventListener("keydown", function (event) {
         if (event.key === " ") { event.preventDefault(); if (!reduceMotion) { userPaused = !userPaused; syncPlayback(); } return; }
@@ -456,6 +543,12 @@
         var pitchStep = event.key === "ArrowUp" ? -0.08 : event.key === "ArrowDown" ? 0.08 : 0;
         if (!yawStep && !pitchStep) { return; }
         event.preventDefault();
+        if (event.shiftKey) {
+            inertia.active = false;
+            motion.x = clamp(motion.x + yawStep * 250, layout.minX, layout.maxX);
+            motion.y = clamp(motion.y + pitchStep * 250, layout.minY, layout.maxY);
+            draw(); return;
+        }
         interaction.yaw = interaction.targetYaw += yawStep;
         interaction.pitch = interaction.targetPitch = clamp(interaction.targetPitch + pitchStep, -1.2, 1.2);
         draw();
